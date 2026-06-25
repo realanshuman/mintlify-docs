@@ -1,7 +1,7 @@
 ---
-title: "Inventory API — Tokensupply"
+title: "Inventory API: Manage Fulfilment Keys — Tokensupply"
 sidebarTitle: "Inventory"
-description: "List, retrieve, create, and update inventory items — including fulfilment keys — in your Tokensupply store via the REST API."
+description: "List, retrieve, create, and update inventory items including fulfilment keys in your Tokensupply store via the REST API endpoints."
 ---
 
 The Inventory API gives you full control over your store's fulfilment stock. Each inventory item holds a `value` — the actual key, code, or secret that gets delivered to a buyer. Because this is your own data, the API returns `value` in responses; however, it is never exposed over webhooks to protect your stock from interception. Use `read:inventory` to fetch items and `write:inventory` to add or update them.

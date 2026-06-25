@@ -1,5 +1,5 @@
 ---
-title: "Connect Eneba to Tokensupply"
+title: "Eneba Integration: Connect and Automate Sales on Tokensupply"
 sidebarTitle: "Eneba"
 description: "Connect Eneba's GraphQL Seller API to Tokensupply, set up OAuth, allowlist your egress IP, and automate key delivery for every paid Eneba order."
 ---
@@ -49,7 +49,7 @@ When **Auto Deliver** is enabled for a listing, every paid Eneba order follows t
 
 <Steps>
   <Step title="Order received">
-    A scheduled sync cron pulls new order updates from Eneba and reconciles their status in Tokensupply.
+    A scheduled sync job pulls new order updates from Eneba and reconciles their status in Tokensupply.
   </Step>
   <Step title="Key reserved">
     Tokensupply reserves an available key from your inventory for the purchased product, preventing it from being allocated elsewhere.
@@ -58,7 +58,7 @@ When **Auto Deliver** is enabled for a listing, every paid Eneba order follows t
     The fulfilment is recorded in Tokensupply and the key is delivered back to Eneba via the GraphQL Seller API.
   </Step>
   <Step title="Status reconciled">
-    The sync cron confirms the delivery was accepted by Eneba and updates the order status in Tokensupply accordingly.
+    The scheduled sync confirms the delivery was accepted by Eneba and updates the order status in Tokensupply accordingly.
   </Step>
 </Steps>
 

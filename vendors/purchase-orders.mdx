@@ -1,7 +1,7 @@
 ---
-title: "Purchase Orders: Procure Stock from Vendors"
+title: "Purchase Orders: Create and Manage Vendor Procurement"
 sidebarTitle: "Purchase Orders"
-description: "Create, confirm, and manage purchase orders — from drafting through stock collection, invoice review, and closure."
+description: "Create, confirm, and manage purchase orders — from drafting and vendor selection through stock collection, invoice review, and final closure."
 ---
 
 Purchase orders (POs) are the formal records of every stock procurement you make through Tokensupply. They capture pricing, tax, payment terms, and the actual inventory received — and they drive the full supplier workflow from first contact to stock hitting your catalogue. Open the PO list from **Purchases → Purchase Orders**.
@@ -64,13 +64,13 @@ Click **New Purchase Order** to open the creation form. The form is grouped into
   </Step>
 
   <Step title="Save or confirm">
-    Click **Save as Draft** to keep editing the PO without notifying anyone. Click **Confirm** to formally send the PO — this triggers an email to the vendor and your admins via `send-po-email`.
+    Click **Save as Draft** to keep editing the PO without notifying anyone. Click **Confirm** to formally send the PO — this emails the vendor and your admins automatically.
   </Step>
 </Steps>
 
 ## PO numbering
 
-Tokensupply generates PO numbers automatically using the `generate_po_number` function. The format is:
+Tokensupply generates PO numbers automatically. The format is:
 
 ```
 PO-{VENDOR_CODE}-{SEQUENCE}
@@ -82,13 +82,13 @@ For example, PO number **42** for a vendor with code `SLR-001` produces `PO-SLR-
 
 Every PO moves through up to five statuses. Advance the status with the **Mark as [Next Status]** button. To revert one step, use the **Undo** action. Tokensupply records a timestamp for each transition and sends a status-change email automatically.
 
-| Status | Displayed as | What it means |
-|---|---|---|
-| `draft` | **Draft** | Saved, not yet sent to the vendor |
-| `sent` | **Confirmed** | Shared with the vendor, awaiting payment |
-| `payment_pending` | **Payment Pending** | Payment is in progress |
-| `paid` | **Paid** | Payment confirmed |
-| `closed` | **Closed** | Procurement complete and locked |
+| Status | What it means |
+|---|---|
+| **Draft** | Saved, not yet sent to the vendor |
+| **Confirmed** | Shared with the vendor, awaiting payment |
+| **Payment Pending** | Payment is in progress |
+| **Paid** | Payment confirmed |
+| **Closed** | Procurement complete and locked |
 
 <Note>
   Stock collection is **not** a separate lifecycle status — it runs in parallel with the lifecycle and is tracked on the same PO detail page.
@@ -128,7 +128,7 @@ Once a PO is at **Confirmed** status, the vendor (or an admin) can submit stock 
     Tokensupply checks each key against existing inventory in real time. Duplicate keys are flagged inline with a **⚠️ DUPLICATE** warning before submission — you can remove them before proceeding.
   </Step>
   <Step title="Submit">
-    Submit the batch. Submissions are capped at the remaining unfulfilled quantity on the PO. When the submitted count reaches the PO quantity, Tokensupply records `stock_collected_at` and the items appear under the linked product's **Inventory** tab.
+    Submit the batch. Submissions are capped at the remaining unfulfilled quantity on the PO. When the submitted count reaches the PO quantity, Tokensupply marks stock collection as complete and the items appear under the linked product's **Inventory** tab.
   </Step>
 </Steps>
 
@@ -180,4 +180,4 @@ For **Individual** vendors, the PDF includes a **Tax Declaration** block in plac
 
 ## Due-date reminders
 
-Tokensupply runs a daily check (`po-due-date-cron`) and automatically sends reminder emails and in-app notifications when a PO is approaching or has passed its due date. No manual setup is required — reminders fire based on the due date you set in **Terms & Delivery**.
+Tokensupply runs a daily check and automatically sends reminder emails and in-app notifications when a PO is approaching or has passed its due date. No manual setup is required — reminders fire based on the due date you set in **Terms & Delivery**.

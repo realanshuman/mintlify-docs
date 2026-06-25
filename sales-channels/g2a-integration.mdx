@@ -1,5 +1,5 @@
 ---
-title: "Connect G2A to Tokensupply"
+title: "G2A Integration: Connect and Automate Sales on Tokensupply"
 sidebarTitle: "G2A"
 description: "Connect G2A to Tokensupply, map products to offers, enable auto-delivery, and manage pricing, stock, and sync settings from one dashboard."
 ---
@@ -64,7 +64,7 @@ You can also manage all G2A listings in bulk from **Sales Channel → G2A**.
 
 ## Auto Sync
 
-Enable **Auto Sync** on the integration page and choose a sync interval. Tokensupply schedules recurring syncs automatically using `pg_cron` — there are no manual sync buttons. Scheduled syncs are deterministic, meaning they run at a predictable cadence without race conditions or missed triggers.
+Enable **Auto Sync** on the integration page and choose a sync interval. Tokensupply schedules recurring syncs automatically — there are no manual sync buttons. Scheduled syncs run at a predictable cadence, so you always know when your stock and pricing data was last pushed to G2A.
 
 <Tip>
   Set your sync interval based on how frequently your inventory levels change. For high-velocity products, choose a shorter interval to keep declared stock accurate and avoid over-selling.
@@ -72,7 +72,7 @@ Enable **Auto Sync** on the integration page and choose a sync interval. Tokensu
 
 ## Auto-delivery and the checkout contract
 
-Tokensupply implements G2A's **Import API** (the `g2a-contract` edge function) to power auto-delivery. When a buyer checks out on G2A, the following happens automatically:
+Tokensupply implements G2A's **Import API** to power auto-delivery. When a buyer checks out on G2A, the following happens automatically:
 
 <Steps>
   <Step title="Reservation created">

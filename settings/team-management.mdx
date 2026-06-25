@@ -1,7 +1,7 @@
 ---
 title: "Team Management: Roles, Invites, and Activity Logs"
 sidebarTitle: "Team"
-description: "Invite staff members, assign Admin or Support roles, review pending invites, and audit team activity — all from the Team page."
+description: "Invite staff members, assign Admin or Support roles, review pending invitations, and audit all team activity — all from the Team page."
 ---
 
 The **Team** page is where Super Admins and Admins manage the people who access your TokenSupply store. From here you can invite new team members, review who is on your team and what role they hold, inspect pending invitations, and audit every administrative action through the activity log. Vendor access is managed separately through vendor detail pages — not through this page.
@@ -21,7 +21,7 @@ The Team page is divided into four tabs:
     View all pending invitations that have been sent but not yet accepted. **Admin and Super Admin only.**
   </Card>
   <Card title="Activity" icon="list-check">
-    A full audit log of administrative events — role changes, invites sent, and member removals — captured automatically by database triggers. **Admin and Super Admin only.**
+    A full audit log of administrative events — role changes, invites sent, and member removals — recorded automatically. **Admin and Super Admin only.**
   </Card>
 </CardGroup>
 
@@ -63,7 +63,7 @@ The Team page is divided into four tabs:
 ## Inviting vendors
 
 <Note>
-  Vendor invites are **not sent from the Team page**. To invite a vendor to your portal, open the vendor's detail page and use the **Invite to Portal** action there. This creates a `vendor_memberships` record rather than a staff account, and generates a vendor-specific setup link. See the [Vendor Portal](/vendors/vendor-portal) guide for the complete flow.
+  Vendor invites are **not sent from the Team page**. To invite a vendor to your portal, open the vendor's detail page and use the **Invite to Portal** action there. This creates a vendor account linked to your store rather than a staff account, and generates a vendor-specific setup link. See the [Vendor Portal](/vendors/vendor-portal) guide for the complete flow.
 </Note>
 
 ## Activity log
@@ -75,7 +75,7 @@ The **Activity** tab records every administrative event on your team — includi
 - Member removals
 - Vendor joins and staff joins (logged as distinct event types)
 
-These events are captured automatically by database triggers, creating a full audit trail without any manual logging required. Use the activity log to investigate access changes or to review the history of a specific team member's role.
+These events are recorded automatically, creating a full audit trail without any manual logging required. Use the activity log to investigate access changes or to review the history of a specific team member's role.
 
 <Tip>
   The activity log is read-only — entries cannot be deleted or modified. This ensures the audit trail remains trustworthy for compliance and dispute resolution.

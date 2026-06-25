@@ -41,7 +41,7 @@ TokenSupply supports **TOTP (Time-based One-Time Password)** for two-factor auth
   </Step>
 </Steps>
 
-Once enabled, every sign-in requires your password plus a TOTP code — this is the **AAL2 (Authenticator Assurance Level 2)** step — meaning stolen credentials alone are not enough to access your account.
+Once enabled, you'll be prompted for your authenticator code at every sign-in — meaning stolen credentials alone are not enough to access your account.
 
 <Warning>
   If you lose access to your authenticator app and your backup codes, account recovery requires contacting TokenSupply support. Store your backup codes somewhere secure (a password manager works well).
@@ -50,7 +50,7 @@ Once enabled, every sign-in requires your password plus a TOTP code — this is 
 ## Sessions and password recovery
 
 - Signing out from any active session terminates access immediately — there is no delay or grace period.
-- To reset your password, navigate to **/reset-password**. The recovery flow uses MFA-aware bypass logic, so you will not get permanently locked out if you are mid-2FA setup when requesting a reset.
+- To reset your password, navigate to **/reset-password**. The recovery flow is designed to avoid permanent lockouts — even if you are mid-2FA setup when requesting a reset.
 
 <Tip>
   If you are locked out and cannot receive a password reset email (for example, if your from-email SMTP is misconfigured), ensure Resend fallback is active — critical account emails route through it automatically.
@@ -70,7 +70,7 @@ The vendor portal is entirely separate from the main TokenSupply platform and ha
 When a vendor with an existing TokenSupply account is invited to a new store and clicks their setup link, they are redirected to the sign-in page with their email pre-filled — they are not prompted to create a new password, since their account already exists.
 
 <Note>
-  Each vendor invite creates a `vendor_memberships` record scoped to that specific store. Accepting an invite on one store does not grant access to any other store, even if the same email is invited to multiple stores.
+  Each vendor invite is scoped to that specific store. Accepting an invite on one store does not grant access to any other store, even if the same email is invited to multiple stores.
 </Note>
 
 ## Account deletion

@@ -1,5 +1,5 @@
 ---
-title: "Vendor Portal: A Secure Workspace for Suppliers"
+title: "Vendor Portal: Secure Supplier Workspace and Access Control"
 sidebarTitle: "Vendor Portal"
 description: "Understand how the vendor portal works — invite suppliers, manage their access, and see exactly what they can and can't do in their scoped workspace."
 ---
@@ -22,7 +22,7 @@ Each store's vendor portal lives at a predictable URL based on the store's token
 
 ## Multi-store memberships
 
-Vendor accounts are stored in a dedicated `vendor_memberships` table, completely separate from platform user profiles. This architecture enables two important behaviours:
+Vendor accounts are completely separate from platform user profiles. This separation enables two important behaviours:
 
 - **One email, multiple stores.** A vendor can be a supplier for several different Tokensupply stores using the same email address. Signing in at `/s/genflix/vendor-portal` and `/s/another/vendor-portal` uses the same credentials, but each portal shows only that store's data.
 - **Vendors can also own stores.** The same email address can be a vendor on one store and the owner of a separate Tokensupply store simultaneously. The vendor portal auth page includes a "Need your own TokenSupply store? Go to main platform →" link to make the distinction clear.
@@ -51,7 +51,7 @@ After sending an invite, the invitation card on the vendor detail page reflects 
 | **Pending Access** | Invite sent, vendor has not completed setup | **Resend invite**, **Revoke invite** |
 | **Active** | Vendor has accepted and is signed in | **Revoke access** |
 
-Revoking access uses the `revoke_vendor_membership` function, which cleanly removes the vendor's membership without deleting their account. Revoking and re-inviting is safe — the new invite immediately supersedes the old one.
+Revoking access cleanly removes the vendor's membership for your store without deleting their account. Revoking and re-inviting is safe — the new invite immediately supersedes the old one.
 
 ## What vendors see in the portal
 
@@ -95,7 +95,7 @@ There is no self-service sign-up on the vendor portal. The auth page displays a 
 
 ## Security model
 
-The vendor portal is secured at the database level, not just at the UI level. Access to every record — POs, products, inventory, tickets, files — is enforced by row-level security (RLS) policies that verify the current user holds an active `vendor_memberships` entry for the current store before returning any data.
+The vendor portal enforces access controls at every layer of the platform, not just in the interface. Every record — POs, products, inventory, tickets, files — is restricted so that only vendors with an active membership for your store can access data belonging to that store.
 
 <CardGroup cols={2}>
   <Card title="Vendor isolation" icon="shield-halved">
@@ -107,5 +107,5 @@ The vendor portal is secured at the database level, not just at the UI level. Ac
 </CardGroup>
 
 <Warning>
-  Revoking a vendor's portal access takes effect immediately at the RLS policy level. The vendor's active session is invalidated and they cannot retrieve any further data from your store.
+  Revoking a vendor's portal access takes effect immediately. Their active session is invalidated and they cannot retrieve any further data from your store.
 </Warning>

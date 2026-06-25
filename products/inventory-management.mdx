@@ -44,9 +44,9 @@ Navigate to a product's **Inventory** tab to add stock. Tokensupply gives you th
 
 ## Duplicate prevention
 
-Tokensupply enforces a unique constraint on the `ref_id` of every inventory item at the database level. This means it is impossible to add the same key twice — even if you try to upload it through different methods or at different times.
+Tokensupply enforces a system-level uniqueness constraint on every inventory item, making it impossible to add the same key twice — even if you try to upload it through different methods or at different times.
 
-On top of the database constraint, the bulk-upload UI detects duplicates in real time as you type or paste, before you even submit the form. Duplicate entries are highlighted inline so you can remove them immediately.
+On top of this system-level protection, the bulk-upload UI detects duplicates in real time as you type or paste, before you even submit the form. Duplicate entries are highlighted inline so you can remove them immediately.
 
 <Warning>
   The duplicate check applies across your entire store — not just within a single product. If a key already exists on any product in your inventory, re-adding it will be blocked.

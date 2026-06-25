@@ -25,7 +25,7 @@ Each delivery is an HTTP POST with these headers:
 | `User-Agent` | TokenSupply-Webhooks/1 |
 | `X-TokenSupply-Event` | The event type, e.g. order.completed |
 | `X-TokenSupply-Delivery` | Unique delivery id (for idempotency) |
-| `X-TokenSupply-Signature` | sha256=<hmac> — see below |
+| `X-TokenSupply-Signature` | sha256=&lt;hmac&gt; — see below |
 
 Body:
 
