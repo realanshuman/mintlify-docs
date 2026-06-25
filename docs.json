@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "name": "Tokensupply",
-  "theme": "luma",
+  "theme": "mint",
   "favicon": "https://media.brand.dev/d1e41bb1-a167-46ed-87e9-1145f196ba1a.png",
   "colors": {
     "primary": "#fb5f27",
