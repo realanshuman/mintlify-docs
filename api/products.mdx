@@ -1,0 +1,249 @@
+---
+title: "Products API — Tokensupply"
+sidebarTitle: "Products"
+description: "List, retrieve, and create products in your Tokensupply store catalogue using the read:products and write:products API scopes."
+---
+
+The Products API lets you manage the product catalogue for your store. Products are the top-level entities that orders and inventory items are attached to — you must create a product before you can add inventory or accept orders for it. Use `read:products` to fetch your catalogue and `write:products` to add new products.
+
+---
+
+## List Products
+
+Retrieve a paginated list of all products in your store, sorted by `created_at` descending.
+
+```
+GET /products
+```
+
+**Required scope:** `read:products`
+
+### Query Parameters
+
+<ParamField query="limit" type="integer" default="50">
+  Maximum number of products to return. Cannot exceed `100`.
+</ParamField>
+
+<ParamField query="offset" type="integer" default="0">
+  Number of products to skip before returning results. Use with `limit` to paginate.
+</ParamField>
+
+### Example Request
+
+```bash
+curl "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/products?limit=50&offset=0" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+### Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": "prd_01abcd",
+      "name": "Xbox Game Pass Ultimate 1 Month",
+      "sku": "XGPU-1M-US",
+      "product_code": "XGPU1M",
+      "product_type": "subscription",
+      "status": "Enabled",
+      "category": "Gaming",
+      "brand": "Microsoft",
+      "description": "One month of Xbox Game Pass Ultimate for the US region.",
+      "image_url": "https://cdn.example.com/products/xgpu-1m.png",
+      "created_at": "2024-01-15T08:00:00Z",
+      "updated_at": "2024-03-10T14:22:00Z"
+    }
+  ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0,
+    "total": 12
+  }
+}
+```
+
+---
+
+## Retrieve a Product
+
+Fetch a single product by its ID.
+
+```
+GET /products/{id}
+```
+
+**Required scope:** `read:products`
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the product to retrieve.
+</ParamField>
+
+### Example Request
+
+```bash
+curl "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/products/prd_01abcd" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+### Example Response
+
+```json
+{
+  "data": {
+    "id": "prd_01abcd",
+    "name": "Xbox Game Pass Ultimate 1 Month",
+    "sku": "XGPU-1M-US",
+    "product_code": "XGPU1M",
+    "product_type": "subscription",
+    "status": "Enabled",
+    "category": "Gaming",
+    "brand": "Microsoft",
+    "description": "One month of Xbox Game Pass Ultimate for the US region.",
+    "image_url": "https://cdn.example.com/products/xgpu-1m.png",
+    "created_at": "2024-01-15T08:00:00Z",
+    "updated_at": "2024-03-10T14:22:00Z"
+  }
+}
+```
+
+---
+
+## Create a Product
+
+Add a new product to your store catalogue. The `sku` must be unique within your store.
+
+```
+POST /products
+```
+
+**Required scope:** `write:products`
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Display name for the product (e.g. `"Xbox Game Pass Ultimate 1 Month"`).
+</ParamField>
+
+<ParamField body="sku" type="string" required>
+  Stock-keeping unit identifier. Must be unique within your store.
+</ParamField>
+
+<ParamField body="product_code" type="string">
+  An additional product code for internal or supplier reference.
+</ParamField>
+
+<ParamField body="product_type" type="string">
+  The type or category of product (e.g. `subscription`, `gift_card`, `software`).
+</ParamField>
+
+<ParamField body="category" type="string">
+  Catalogue category the product belongs to (e.g. `Gaming`, `Entertainment`).
+</ParamField>
+
+<ParamField body="brand" type="string">
+  Brand or publisher of the product (e.g. `Microsoft`, `Sony`).
+</ParamField>
+
+<ParamField body="description" type="string">
+  Full description of the product shown to buyers.
+</ParamField>
+
+<ParamField body="status" type="string" default="Enabled">
+  Visibility status of the product. Defaults to `Enabled` if omitted. Set to `Disabled` to hide the product.
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/products" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Xbox Game Pass Ultimate 1 Month",
+    "sku": "XGPU-1M-US",
+    "product_type": "subscription",
+    "category": "Gaming",
+    "brand": "Microsoft",
+    "description": "One month of Xbox Game Pass Ultimate for the US region."
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "data": {
+    "id": "prd_01abcd",
+    "name": "Xbox Game Pass Ultimate 1 Month",
+    "sku": "XGPU-1M-US",
+    "product_code": null,
+    "product_type": "subscription",
+    "status": "Enabled",
+    "category": "Gaming",
+    "brand": "Microsoft",
+    "description": "One month of Xbox Game Pass Ultimate for the US region.",
+    "image_url": null,
+    "created_at": "2024-06-01T10:00:00Z",
+    "updated_at": "2024-06-01T10:00:00Z"
+  }
+}
+```
+
+<Note>
+  SKUs must be unique within your store. Attempting to create a product with a duplicate SKU returns a `400 insert_error` response.
+</Note>
+
+---
+
+## Response Fields
+
+<ResponseField name="id" type="string">
+  Unique identifier for the product, assigned by Tokensupply.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Display name of the product.
+</ResponseField>
+
+<ResponseField name="sku" type="string">
+  Unique stock-keeping unit identifier within your store.
+</ResponseField>
+
+<ResponseField name="product_code" type="string">
+  Additional product code for internal or supplier reference, if provided.
+</ResponseField>
+
+<ResponseField name="product_type" type="string">
+  The type or category of the product (e.g. `subscription`, `gift_card`).
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Current visibility status of the product (`Enabled` or `Disabled`).
+</ResponseField>
+
+<ResponseField name="category" type="string">
+  Catalogue category the product belongs to.
+</ResponseField>
+
+<ResponseField name="brand" type="string">
+  Brand or publisher associated with the product.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Full product description.
+</ResponseField>
+
+<ResponseField name="image_url" type="string">
+  URL of the product image, if set.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp of when the product was created.
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  ISO 8601 timestamp of the last update to the product.
+</ResponseField>

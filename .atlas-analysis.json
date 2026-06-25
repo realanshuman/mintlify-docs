@@ -1,13 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Tokensupply",
+  "projectType": "saas",
+  "projectName": "Tokensupply",
+  "projectDescription": "An all-in-one platform for digital goods sellers to manage inventory, orders, vendors, sales channels, and customer delivery from a single workspace.",
   "theme": "luma",
-  "favicon": "https://media.brand.dev/d1e41bb1-a167-46ed-87e9-1145f196ba1a.png",
-  "colors": {
-    "primary": "#fb5f27",
-    "light": "#fa6672",
-    "dark": "#fb5f27"
-  },
+  "primaryColor": "#fb5f27",
+  "lightColor": "#fa6672",
+  "darkColor": null,
   "navigation": {
     "tabs": [
       {
@@ -58,7 +56,7 @@
             ]
           },
           {
-            "group": "Analytics",
+            "group": "Analytics & Reports",
             "pages": [
               "analytics/analytics"
             ]
@@ -111,5 +109,33 @@
         ]
       }
     ]
-  }
+  },
+  "keyFeatures": [
+    "Multi-channel auto-delivery across Shopify, G2A, Eneba, and more",
+    "AES-256 encrypted key vault with masked reveal and full audit trail",
+    "Vendor management with purchase orders and portal access",
+    "Customer delivery portal with branded tokenised order links",
+    "Credit-based billing: 1 key delivered = 1 credit consumed",
+    "REST API with scoped API keys for programmatic access",
+    "Real-time webhooks for orders, inventory, tickets, and more",
+    "Custom domains with automatic SSL provisioning",
+    "AI-powered ticket triage and support management",
+    "Analytics dashboard covering revenue, products, vendors, and customers"
+  ],
+  "publicApiSurface": [
+    "GET /orders, GET /orders/{id}, POST /orders",
+    "GET /inventory, GET /inventory/{id}, POST /inventory, PATCH /inventory/{id}",
+    "GET /products, GET /products/{id}, POST /products",
+    "GET /tickets, GET /tickets/{id}",
+    "GET /vendors, GET /vendors/{id}",
+    "GET /customers, GET /customers/{id}",
+    "GET / (meta — verify key and list resources)",
+    "Webhook events: order.created/completed/refunded/cancelled",
+    "Webhook events: inventory.created/sold/low_stock",
+    "Webhook events: ticket.created/updated/resolved",
+    "Webhook events: purchase_order.created/paid",
+    "Webhook events: product.created/updated/deleted",
+    "Webhook events: customer.created/updated",
+    "Webhook events: vendor.created, integration.connected/disconnected"
+  ]
 }

@@ -1,0 +1,92 @@
+---
+title: "Vendor Offers: Price & Delivery-Time Mappings"
+sidebarTitle: "Vendor Offers"
+description: "Create and manage vendor offers — pricing bids that auto-fill purchase orders and surface the lowest source price across your catalogue."
+---
+
+A vendor offer is a record that maps a specific vendor to a specific product with a quoted price and delivery time. Offers serve as the single source of truth for supplier pricing in Tokensupply — they power automatic price fill-in on new purchase orders and give you instant visibility into which vendor offers the best deal for any product in your catalogue.
+
+## What vendor offers do
+
+Every active vendor offer participates in two platform features:
+
+<CardGroup cols={2}>
+  <Card title="PO auto-fill" icon="wand-magic-sparkles">
+    When you create a purchase order and select a vendor–product pair that has a matching active offer, Tokensupply automatically fills in the **unit price** and **delivery time** for you. You can still override the values before confirming the PO.
+  </Card>
+  <Card title="Lowest Price highlight" icon="circle-dollar-to-slot">
+    The Products list highlights the **Lowest Price** across all active vendor offers for each product. At a glance you can see the cheapest available source without opening individual vendor profiles.
+  </Card>
+</CardGroup>
+
+## Where to manage offers
+
+You can view and manage vendor offers from three different locations depending on your workflow:
+
+<Tabs>
+  <Tab title="Per product">
+    Open a product and navigate to its **Vendor Offers** tab. This view shows every offer across all vendors for that product. From here you can add a new offer, edit an existing one, change an offer's status, or remove it entirely.
+
+    Use this view when you want to compare all supplier pricing for one product in a single place.
+  </Tab>
+  <Tab title="Per vendor">
+    Open a vendor and navigate to their **Products / Offers** tab. This view shows every offer that vendor has submitted across all products. The data is identical — just scoped to the vendor.
+
+    Use this view when you're reviewing or renegotiating a specific vendor's full pricing catalogue.
+  </Tab>
+  <Tab title="Vendor portal">
+    Invited vendors can view and manage their own offers under **Products** in their vendor portal. They can create new offers and edit existing ones, but only for products that you have made open to offers. Vendors cannot see other vendors' offers or identities — only their own.
+  </Tab>
+</Tabs>
+
+## Offer fields
+
+<ParamField path="product" type="entity" required>
+  The product this offer applies to. Selected via the product picker — only products in your store catalogue are available.
+</ParamField>
+
+<ParamField path="price" type="number" required>
+  The vendor's quoted unit price, expressed in the vendor's default currency.
+</ParamField>
+
+<ParamField path="delivery_time" type="enum" required>
+  How quickly the vendor can deliver the product after a PO is confirmed. Options are:
+  - **Instant**
+  - **Within 1 hour**
+  - **Within 24 hours**
+  - **Custom** — enter a specific timeframe
+</ParamField>
+
+<ParamField path="status" type="enum" required>
+  Set to **Active** or **Inactive**. Only active offers participate in PO auto-fill and appear in Lowest Price calculations. Deactivating an offer preserves its history without deleting the record.
+</ParamField>
+
+## Using offers when creating a purchase order
+
+When you open **New Purchase Order** and select a vendor and product, Tokensupply looks up any active offer for that pair. If one is found:
+
+1. The **Unit Price** field is filled with the offer price
+2. The **Delivery Time** field is filled with the offer's delivery time
+3. You can override either value before saving or confirming the PO
+
+If no active offer exists for the vendor–product combination, both fields are left blank for you to fill in manually. Creating a PO this way does not automatically create an offer — offers must be added explicitly through the Vendor Offers tab or the vendor portal.
+
+## Vendor-side visibility and privacy
+
+Vendors who access their portal can see their own active offer for each product, but the platform deliberately limits what they can see about competitors:
+
+<Note>
+  Vendors are shown only a **relative signal** — for example, "your offer is the lowest" or "lower offers exist for this product." They cannot see competitor names, exact competitor prices, or how many other vendors have submitted offers for the same product.
+</Note>
+
+Offer history is preserved for auditing even after an offer is deactivated or edited. Admins can view the full history on the Vendor Offers tab.
+
+## Keeping offers accurate
+
+Stale pricing causes POs to be created with incorrect unit prices, which leads to reconciliation issues later. Build a regular review cadence into your procurement workflow:
+
+<Tip>
+  Review vendor offers whenever a vendor notifies you of a price change. Open their **Products / Offers** tab, update the price field, and save. The new price takes effect on all POs created from that point forward — existing POs are not retroactively changed.
+</Tip>
+
+Deactivate an offer rather than deleting it if you may work with the vendor on that product again — the historical pricing record remains intact for reference and reporting.

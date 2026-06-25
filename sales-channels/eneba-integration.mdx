@@ -1,0 +1,83 @@
+---
+title: "Connect Eneba to Tokensupply"
+sidebarTitle: "Eneba"
+description: "Connect Eneba's GraphQL Seller API to Tokensupply, set up OAuth, allowlist your egress IP, and automate key delivery for every paid Eneba order."
+---
+
+The Eneba integration uses Eneba's **GraphQL Seller API** with an OAuth `api_consumer` grant. Tokensupply supports both sandbox and production environments, so you can test your setup end-to-end before going live. Once connected, paid Eneba orders trigger automatic key reservation and delivery through the same GraphQL API — no manual steps required.
+
+## Connect your Eneba account
+
+<Steps>
+  <Step title="Open the Eneba connector">
+    In the Tokensupply sidebar, navigate to **Integrations → Eneba**.
+  </Step>
+  <Step title="Choose your environment">
+    Select either **Sandbox** (for testing) or **Production** (for live orders). You can connect a sandbox environment first, verify the full order flow, and then switch to production when you're ready.
+  </Step>
+  <Step title="Enter your OAuth credentials">
+    Provide your Eneba **Client ID** and **Client Secret**. These are generated in the Eneba Seller dashboard under your API application settings.
+  </Step>
+  <Step title="Allowlist Tokensupply's egress IP">
+    Before saving, add Tokensupply's egress IP address to the allowlist in your Eneba dashboard. Tokensupply proxies all requests through a stable, fixed IP address — allowlisting this IP ensures every API call is accepted by Eneba without interruption.
+  </Step>
+  <Step title="Save and complete the OAuth handshake">
+    Click **Save**. Tokensupply completes the OAuth handshake with Eneba and stores your access and refresh tokens encrypted at rest. Tokens are refreshed automatically before they expire — you do not need to re-authenticate manually.
+  </Step>
+</Steps>
+
+<Warning>
+  Eneba rejects API requests from IP addresses that are not on your allowlist. If you skip the IP allowlisting step, the connection will appear to save but all subsequent sync and fulfilment requests will fail. Add the egress IP **before** clicking Save.
+</Warning>
+
+## Manage listings
+
+After connecting, manage all your Eneba listings under **Sales Channel → Eneba**. Each listing supports two controls:
+
+<CardGroup cols={2}>
+  <Card title="Active toggle" icon="toggle-on">
+    Enable or disable a listing on Eneba. Pausing a listing suspends order processing for that product without removing the mapping.
+  </Card>
+  <Card title="Auto Deliver toggle" icon="bolt">
+    When on, a paid Eneba order automatically triggers key reservation, line item fulfilment, and delivery back to Eneba through the GraphQL API — with no manual action needed.
+  </Card>
+</CardGroup>
+
+## Auto-delivery order flow
+
+When **Auto Deliver** is enabled for a listing, every paid Eneba order follows this sequence automatically:
+
+<Steps>
+  <Step title="Order received">
+    A scheduled sync cron pulls new order updates from Eneba and reconciles their status in Tokensupply.
+  </Step>
+  <Step title="Key reserved">
+    Tokensupply reserves an available key from your inventory for the purchased product, preventing it from being allocated elsewhere.
+  </Step>
+  <Step title="Line item fulfilled">
+    The fulfilment is recorded in Tokensupply and the key is delivered back to Eneba via the GraphQL Seller API.
+  </Step>
+  <Step title="Status reconciled">
+    The sync cron confirms the delivery was accepted by Eneba and updates the order status in Tokensupply accordingly.
+  </Step>
+</Steps>
+
+## Activity log
+
+The **Activity** tab on the Eneba integration page records a full history of every event related to this connection:
+
+<Accordion title="Sync runs">
+  Each scheduled sync run is logged with a timestamp, the number of orders processed, and the outcome (success or error).
+</Accordion>
+
+<Accordion title="Fulfilment attempts">
+  Every auto-delivery attempt is recorded, including which key was delivered and whether the GraphQL API accepted it.
+</Accordion>
+
+<Accordion title="API errors">
+  OAuth token failures, network errors, and GraphQL response errors are all logged here with enough detail to diagnose the root cause — particularly useful for IP allowlist issues, where Eneba will return an authentication error until the correct IP is added.
+</Accordion>
+
+<Tip>
+  If orders are not being fulfilled as expected, check the Activity tab first. An IP allowlist rejection or an expired OAuth credential will appear there immediately and tell you exactly what to fix.
+</Tip>

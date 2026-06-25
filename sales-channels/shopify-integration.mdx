@@ -1,0 +1,84 @@
+---
+title: "Connect Shopify to Tokensupply"
+sidebarTitle: "Shopify"
+description: "Connect your Shopify store to Tokensupply, map products for auto-delivery, and fulfil digital key orders automatically through a tokenised customer portal."
+---
+
+The Shopify integration lets you sell digital goods directly from your own Shopify storefront while Tokensupply handles key reservation, fulfilment, and delivery behind the scenes. When a paid order arrives, a key is reserved from your inventory, the line item is fulfilled in Shopify, and the customer receives a tokenised link to reveal their key — all without any manual steps.
+
+## Connect your Shopify store
+
+<Steps>
+  <Step title="Open the Shopify connector">
+    In the Tokensupply sidebar, navigate to **Integrations → Shopify**.
+  </Step>
+  <Step title="Enter your shop domain">
+    Type your Shopify shop domain in the **Shop Domain** field. Use the format `your-store.myshopify.com`.
+  </Step>
+  <Step title="Add your Admin API access token">
+    Paste your Shopify **Admin API access token** into the token field. Tokensupply uses this token to read orders, fulfil line items, and list your products.
+  </Step>
+  <Step title="Save and validate">
+    Click **Save**. Tokensupply validates the credentials, lists your Shopify products, and displays the connection status. If the connection succeeds, the status indicator turns active and your Shopify products become available for mapping.
+  </Step>
+</Steps>
+
+<Note>
+  Generate a dedicated custom app in your Shopify Admin (**Settings → Apps and sales channels → Develop apps**) and scope the token to the minimum permissions required: `read_products`, `write_orders`, and `write_fulfillments`.
+</Note>
+
+## Map products to Shopify variants
+
+After connecting, open any product in Tokensupply and go to its **Sales Channels** tab. From there you can map the product to a specific Shopify variant and configure per-mapping settings.
+
+Each mapping exposes two controls:
+
+<CardGroup cols={2}>
+  <Card title="Status" icon="toggle-on">
+    Set the mapping to **Active** to enable order processing for this product, or **Paused** to suspend delivery without removing the mapping entirely.
+  </Card>
+  <Card title="Auto Deliver" icon="bolt">
+    When enabled, Tokensupply automatically reserves and delivers a key as soon as a paid Shopify order is received — no manual intervention needed.
+  </Card>
+</CardGroup>
+
+## Manage mappings in bulk
+
+To review or update all Shopify mappings at once, navigate to **Sales Channel → Shopify**. From this view you can filter by status, toggle Active and Auto Deliver across multiple products, and audit every product–variant relationship without opening individual product pages.
+
+## Order flow
+
+Once a product mapping is active, the following sequence happens automatically for every paid Shopify order:
+
+<Steps>
+  <Step title="Order received">
+    Tokensupply detects the paid order from Shopify.
+  </Step>
+  <Step title="Key reserved">
+    An available key for the mapped product is reserved from your inventory, preventing it from being sold elsewhere.
+  </Step>
+  <Step title="Line item fulfilled">
+    Tokensupply marks the Shopify order line item as fulfilled via the Admin API.
+  </Step>
+  <Step title="Delivery link emailed">
+    The customer receives an email containing a tokenised delivery link to your branded customer portal, where they can reveal their key.
+  </Step>
+</Steps>
+
+## Tips for a smooth setup
+
+<Accordion title="Scope your Admin API token carefully">
+  Only grant the permissions Tokensupply needs. The minimum required scopes are `read_products`, `write_orders`, and `write_fulfillments`. Overly broad tokens are a security risk and may be flagged by Shopify's app review.
+</Accordion>
+
+<Accordion title="Only enable Auto Deliver for products with healthy stock">
+  If Auto Deliver is on and your inventory runs out, incoming orders will not be fulfilled automatically. Monitor your stock levels or set reorder thresholds before activating Auto Deliver on high-volume products.
+</Accordion>
+
+<Accordion title="Cancellations release reserved keys">
+  If a Shopify order is cancelled upstream, any key that was reserved for that order is released back into your available inventory automatically. You do not need to manually reconcile stock after a cancellation.
+</Accordion>
+
+<Tip>
+  Use the **Sales Channel → Shopify** bulk view to do a pre-launch audit — confirm every mapped product has Active status, healthy stock, and the correct variant selected before you open your store to traffic.
+</Tip>

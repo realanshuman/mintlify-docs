@@ -1,0 +1,74 @@
+---
+title: "Customer Management: Adding and Organising Customers"
+sidebarTitle: "Customers"
+description: "Add Individual and Business customers, explore the customer detail page, and use the EntityPicker to link customers to orders and invoices inline."
+---
+
+Tokensupply keeps a central customer directory so every order, invoice, and interaction stays connected to a real contact record. Rather than entering customer details each time you create an order, you build a reusable profile once and reference it wherever you need it — from manual order creation to invoice generation. Each customer gets a unique sequential identifier, making them easy to find and reference across the platform.
+
+## Adding a customer
+
+<Steps>
+  <Step title="Navigate to the Customers list">
+    Go to **Sales → Customers** in the sidebar to open the customer directory.
+  </Step>
+  <Step title="Click Add Customer">
+    Select **Add Customer** to open the customer creation form.
+  </Step>
+  <Step title="Choose the customer type">
+    Tag the customer as either **Individual** or **Business**. This distinction carries through to invoices and helps you apply the right tax treatment.
+  </Step>
+  <Step title="Fill in the details and save">
+    Enter the customer's name, email address, and any other relevant details. Save the record — Tokensupply assigns the next available sequential identifier (for example, `CUS-001`, `CUS-002`) automatically.
+  </Step>
+</Steps>
+
+<Info>
+  Customer IDs follow a sequential format — `CUS-001`, `CUS-002`, and so on. IDs are assigned in order and never reused, so you can always reference a customer by their ID in search fields and filters.
+</Info>
+
+## Customer detail page
+
+Clicking any customer in the directory opens their detail page. The layout uses a profile header with quick stats at the top and an underline tab bar below it for navigating between different views of the customer's data.
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="user">
+    Contact details, customer type (Individual or Business), and a summary of activity at a glance.
+  </Card>
+  <Card title="Orders" icon="bag-shopping">
+    Every manual order associated with this customer, with status badges and quick links to each transaction detail page.
+  </Card>
+  <Card title="Invoices" icon="file-invoice">
+    All invoices raised for this customer, including draft and confirmed invoices with their current status and totals.
+  </Card>
+  <Card title="Activity" icon="clock-rotate-left">
+    A chronological log of actions taken on the customer record — creation, edits, order associations, and internal notes.
+  </Card>
+</CardGroup>
+
+### Internal notes
+
+The detail page also supports internal notes — freeform text visible only to your team. Use notes to record account context, special pricing arrangements, or any other information that helps your team serve the customer consistently.
+
+<Tip>
+  Internal notes are never visible to the customer. They appear only on the customer detail page inside your Tokensupply workspace.
+</Tip>
+
+## Using customers in orders and invoices
+
+When you create a manual order or an invoice, Tokensupply uses the **EntityPicker** component to let you associate a customer with the record. You have two options:
+
+<Tabs>
+  <Tab title="Search for existing customer">
+    Start typing in the customer field to search your directory by:
+
+    - **Name** — full or partial match
+    - **Email address** — useful when customers share a name
+    - **CUS-ID** — the fastest lookup if you have the identifier to hand (for example, `CUS-042`)
+
+    Select the matching result to link the customer to the order or invoice.
+  </Tab>
+  <Tab title="Create customer inline">
+    If the customer doesn't exist in your directory yet, click **Create customer** directly inside the EntityPicker — no need to navigate away from the order or invoice form. The new customer record is saved to your directory and linked to the current record simultaneously.
+  </Tab>
+</Tabs>

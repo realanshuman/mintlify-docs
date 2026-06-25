@@ -1,0 +1,104 @@
+---
+title: "Invoices: Creating, Sending, and Managing Invoices"
+sidebarTitle: "Invoices"
+description: "Create invoices with inclusive or exclusive tax, lock confirmed invoices to protect financial records, generate PDFs, and email them to customers."
+---
+
+Tokensupply's invoicing module lets you raise formal invoices directly from your sales workflow — linked to a customer record, populated with your business identity, and available as a downloadable PDF. You control the tax mode, save drafts while you're working, confirm invoices to lock them for integrity, and send them to customers via email in one click. Everything flows from the same platform as your orders and inventory, so there's no need for a separate invoicing tool.
+
+## Creating an invoice
+
+<Steps>
+  <Step title="Open the invoice form">
+    Navigate to **Sales → Invoices** in the sidebar, then click **Create Invoice**.
+  </Step>
+  <Step title="Pick a customer">
+    Use the customer picker to search by name, email, or CUS-ID. If the customer doesn't have a record yet, create them inline through the EntityPicker without leaving the form.
+  </Step>
+  <Step title="Add line items">
+    Add one or more line items to the invoice. For each item, enter a description, quantity, and unit price. The invoice total updates live as you type.
+  </Step>
+  <Step title="Configure tax">
+    Choose between **Inclusive** and **Exclusive** tax mode. Totals recalculate automatically each time you switch modes or update a line item amount.
+  </Step>
+  <Step title="Save or confirm">
+    Save the invoice as a **Draft** to continue editing later, or move it straight to **Confirmed** when it's ready to send.
+  </Step>
+</Steps>
+
+## Tax modes
+
+Tokensupply supports two tax calculation modes. Choose the one that matches how your prices are structured.
+
+<Tabs>
+  <Tab title="Inclusive tax">
+    **Inclusive** tax means the price you enter for each line item already includes tax. Tokensupply back-calculates the tax component and shows both the net and tax amounts on the invoice. Use this mode when your prices are quoted to customers as tax-included.
+  </Tab>
+  <Tab title="Exclusive tax">
+    **Exclusive** tax means the price you enter is the pre-tax amount. Tokensupply adds the applicable tax on top and shows the gross total. Use this mode when your prices are listed net (before tax) and tax is charged separately.
+  </Tab>
+</Tabs>
+
+<Info>
+  All totals — subtotal, tax amount, and grand total — recalculate live as you edit line items or switch between Inclusive and Exclusive mode. There's no need to save the invoice to see the updated figures.
+</Info>
+
+## Invoice statuses and locking
+
+Every invoice moves through a simple two-stage lifecycle.
+
+| Status | Meaning |
+|--------|---------|
+| **Draft** | In progress — all fields are editable, the invoice has not been sent |
+| **Confirmed** | Locked — the invoice cannot be returned to Draft |
+
+<Warning>
+  Once you move an invoice to **Confirmed**, it cannot be moved back to **Draft**. This lock protects your financial records and ensures the generated PDF reflects the final agreed amount. Double-check line items, tax mode, and customer details before confirming.
+</Warning>
+
+## Invoice PDF
+
+Every confirmed invoice has a downloadable PDF generated automatically. The PDF is populated from two sources:
+
+<CardGroup cols={2}>
+  <Card title="Invoice details" icon="file-lines">
+    Line items, quantities, unit prices, tax breakdown, grand total, invoice number, and issue date — all drawn from the invoice form.
+  </Card>
+  <Card title="Business identity from Settings" icon="building">
+    Your **Company Name**, **Legal Name**, GST/PAN number, business address, and logo are pulled automatically from **Settings → General**. Keep your Settings up to date to ensure every invoice is correctly branded.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Before sending your first invoice, confirm that your legal details — Company Name, Legal Name, GST/PAN, and address — are filled in under **Settings → General**. Missing details will result in a blank or incomplete PDF header.
+</Tip>
+
+## Sending an invoice
+
+Once an invoice is confirmed, send it to your customer directly from the invoice detail page.
+
+<Steps>
+  <Step title="Open the confirmed invoice">
+    Navigate to **Sales → Invoices** and click the invoice you want to send.
+  </Step>
+  <Step title="Click Send">
+    Use the **Send** action to email the invoice PDF to the customer address on the linked customer record.
+  </Step>
+  <Step title="Delivery via SMTP or Resend">
+    Tokensupply sends the email through your configured SMTP server if one is set up under **Settings → Email Setup**. If SMTP is not configured or the send fails, Tokensupply falls back to Resend automatically to ensure delivery.
+  </Step>
+</Steps>
+
+<Note>
+  For the most reliable delivery — and to have the email arrive from your own domain rather than a shared sending address — configure SMTP under **Settings → Email Setup** before sending invoices.
+</Note>
+
+## Invoice lifecycle summary
+
+<Accordion title="Full invoice lifecycle at a glance">
+  1. **Create** — open **Sales → Invoices → Create Invoice**, add a customer and line items, set tax mode
+  2. **Draft** — save at any point; continue editing as needed
+  3. **Confirmed** — lock the invoice when it's finalised; PDF is generated
+  4. **Sent** — email the PDF to the customer via SMTP or Resend fallback
+  5. **Paid / Archived** — mark the invoice as paid or archive it once settled to keep your invoice list clean
+</Accordion>

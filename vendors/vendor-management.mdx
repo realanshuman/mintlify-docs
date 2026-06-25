@@ -1,0 +1,153 @@
+---
+title: "Vendor Management: Add, Organize & Invite Vendors"
+sidebarTitle: "Vendors"
+description: "Add and manage your supply-side vendors — set payment terms, banking details, agreements, and invite them to the vendor portal."
+---
+
+Vendors are the suppliers you procure digital goods from, and every purchase order, offer, and procurement transaction in Tokensupply is tied to one. You manage the full vendor lifecycle — from first contact through signed agreements — directly inside the platform without needing external spreadsheets or contact managers.
+
+## Finding your vendors
+
+Navigate to **Purchases → Vendors** to open the vendor list. Each row shows the vendor's name, status (Active / Inactive), country, default currency, payment terms, and total number of purchase orders placed with them.
+
+## Adding a vendor
+
+Click **Add Vendor** in the top-right corner of the list to open the vendor form. The form is divided into five named sections — fill them in order.
+
+<Steps>
+  <Step title="Basic details">
+    Enter the vendor's **Name**, then choose a **Vendor Type** — either **Individual** or **Business**. Select their **Country** and **Default Currency**, then set their **Status** to Active or Inactive.
+
+    <Info>
+      The vendor type you choose here controls how tax is calculated on every purchase order for this vendor. Choose carefully — it affects compliance.
+    </Info>
+  </Step>
+
+  <Step title="Contact information">
+    Enter the vendor's primary **Email**, **Phone**, and **Address**. You can also add chat handles for **Telegram**, **WhatsApp**, and **Instagram** if you coordinate with them on those platforms.
+  </Step>
+
+  <Step title="Catalogue">
+    Select the categories of goods this vendor supplies. Available categories are:
+
+    - Gift Cards
+    - Gaming / Software Keys
+    - Subscriptions
+    - Licenses
+    - In-game Currency
+    - DLCs
+    - Other
+  </Step>
+
+  <Step title="Commercial terms">
+    Choose the vendor's default **Payment Terms**. This value is pre-filled on every new purchase order you create for them, though you can always override it per PO.
+
+    <CardGroup cols={2}>
+      <Card title="Standard net terms">
+        Net 7, Net 15, Net 30, Net 45, Net 60, Net 90
+      </Card>
+      <Card title="Immediate terms">
+        Due on Receipt, Cash on Delivery (COD), Advance
+      </Card>
+    </CardGroup>
+  </Step>
+
+  <Step title="Banking details">
+    Enter the vendor's bank account details for payment. The fields shown adapt automatically to the vendor's country:
+
+    | Country / Region | Fields shown |
+    |---|---|
+    | India | IFSC code, account number |
+    | United States | Routing number, account number |
+    | United Kingdom | Sort code, account number |
+    | Australia | BSB, account number |
+    | EU / international | IBAN, SWIFT/BIC |
+
+    Additional payment identifiers such as UPI ID or PayPal email can also be added where applicable.
+  </Step>
+</Steps>
+
+Save the form and Tokensupply assigns the vendor a sequential code in the format `SLR-001`, `SLR-002`, and so on. This code is used as the vendor prefix in every PO number (for example, `PO-SLR-001-0042`).
+
+## Vendor types and tax treatment
+
+The **Vendor Type** you set drives tax behaviour across the entire relationship.
+
+<Tabs>
+  <Tab title="Individual">
+    Individual vendors are treated as unregistered sellers. All purchase orders raised for them carry **0% tax** — there is no override. The generated PO PDF includes a **Tax Declaration** notice in place of the standard tax breakdown, which serves as your compliance record.
+
+    The vendor badge displays in **blue** on the vendor card and on every PO header.
+  </Tab>
+  <Tab title="Business">
+    Business vendors receive automatic tax rates based on a comparison of your store's country and the vendor's country. For example, an Indian vendor supplying to an Indian store triggers **GST 18%**, while certain EU cross-border scenarios produce **0% reverse charge**.
+
+    You can toggle **Tax Inclusive** on individual POs if the unit price the vendor quotes already includes tax.
+
+    The vendor badge displays in **orange**.
+  </Tab>
+</Tabs>
+
+## Vendor detail page
+
+Click any vendor in the list to open their detail page. At the top you'll find a profile header and quick stats — total POs, total spend, and open tickets. Below that, seven tabs organise all vendor-related data:
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="layout-dashboard">
+    A summary of the vendor's profile, contact details, banking info, and commercial terms.
+  </Card>
+  <Card title="Purchase Orders" icon="file-invoice">
+    Every PO raised for this vendor, filterable and searchable without leaving the vendor page.
+  </Card>
+  <Card title="Products" icon="box">
+    Products this vendor is mapped to through active or inactive offers.
+  </Card>
+  <Card title="Offers" icon="tag">
+    All vendor offers — pricing bids for specific products — with the ability to add, edit, or deactivate them.
+  </Card>
+  <Card title="Agreements" icon="file-contract">
+    Signed contracts and NDAs uploaded as PDF or DOCX files.
+  </Card>
+  <Card title="Tickets" icon="ticket">
+    Support tickets that involve this vendor, scoped automatically.
+  </Card>
+  <Card title="Activity" icon="activity">
+    A chronological audit trail of every change made to this vendor record.
+  </Card>
+</CardGroup>
+
+## Inviting a vendor to the portal
+
+The vendor portal gives your suppliers a secure, scoped workspace where they can submit stock, upload invoices, and manage their offers without requiring direct admin access to your store.
+
+From the vendor detail page, click **Invite to Portal**. Tokensupply sends the vendor a setup email — delivered via your configured SMTP connection, with Resend used as an automatic fallback if SMTP is not set up.
+
+The invitation card on the vendor detail page reflects the current state:
+
+| State | Meaning | Available actions |
+|---|---|---|
+| **No portal access** | No invite has been sent | Click **Invite to Portal** to begin |
+| **Pending Access** | Invite sent, vendor has not completed setup | **Resend invite** or **Revoke invite** |
+| **Active** | Vendor has accepted and can sign in | **Revoke access** |
+
+<Tip>
+  Revoking and re-inviting is safe at any time. The new invite supersedes the previous one and the card immediately updates to **Pending Access**. The vendor's account is not deleted — only their membership for your store is removed.
+</Tip>
+
+## Managing agreements
+
+The **Agreements** tab on the vendor detail page lets you upload signed contracts, NDAs, and any other legal documents associated with the vendor.
+
+- Accepted file formats: **PDF** and **DOCX**
+- Files are stored in a **private storage bucket** — they are never publicly accessible
+- Download links use **short-lived signed URLs** that expire automatically
+
+Upload a document by clicking **Upload Agreement** within the Agreements tab, then selecting your file.
+
+## Editing and deleting vendors
+
+To update any vendor detail, click **Edit** in the profile header. All fields from the original Add Vendor form are editable.
+
+<Warning>
+  Deleting a vendor is permanent and requires you to type **DELETE** to confirm. Linked purchase orders, vendor offers, and transactions are **unlinked** — they are not deleted, but they lose their association with the vendor record. Use Edit to deactivate a vendor instead of deleting them if you want to preserve the full history.
+</Warning>

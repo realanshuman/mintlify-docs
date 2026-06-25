@@ -1,0 +1,113 @@
+---
+title: "API Authentication — Tokensupply"
+sidebarTitle: "Authentication"
+description: "Create and manage API keys, send Bearer tokens, understand key scopes, and handle authentication errors in the Tokensupply API."
+---
+
+Every request to the Tokensupply API must be authenticated with an API key. Keys are store-scoped — a key tied to one store can never read or write data belonging to another. This page walks you through creating a key, sending it with requests, and understanding the scope system that controls what each key is allowed to do.
+
+## Creating an API Key
+
+<Steps>
+  <Step title="Open API settings">
+    In your Tokensupply dashboard, navigate to **Settings → API**.
+  </Step>
+  <Step title="Generate a new key">
+    Click **Create API Key**, give the key a descriptive name, and select the scopes it should carry.
+  </Step>
+  <Step title="Copy and store the key">
+    Your new key is displayed **once** in full. Copy it immediately and store it somewhere secure such as an environment variable or a secrets manager. Tokensupply stores only a SHA-256 hash and cannot show you the plaintext value again.
+  </Step>
+</Steps>
+
+<Warning>
+  If you lose your API key, you must revoke it and create a new one. There is no recovery path.
+</Warning>
+
+## Key Format
+
+All Tokensupply API keys follow this format:
+
+```
+ts_live_xxxxxxxxxxxx
+```
+
+The `ts_live_` prefix identifies the key as a live production credential.
+
+## Sending Your Key
+
+Include your key in the `Authorization` header as a Bearer token on every request:
+
+```bash
+curl https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/orders \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+The API does not accept keys via query parameters or request bodies — the `Authorization` header is the only supported mechanism.
+
+## Authentication Errors
+
+| Situation | HTTP Status | Error Code | What to do |
+|---|---|---|---|
+| No `Authorization` header | `401` | `unauthorized` | Add a valid Bearer token |
+| Malformed or invalid key | `401` | `unauthorized` | Check the key value and format |
+| Revoked key | `401` | `unauthorized` | Generate a new key in Settings → API |
+| Expired key | `401` | `expired` | Renew or replace the key |
+
+<Note>
+  Both `unauthorized` and `expired` share the `401` status code. Always inspect the `code` field in the error body so your code can distinguish between them.
+</Note>
+
+## Scopes
+
+Scopes are permissions assigned to a key at creation time. They define exactly which endpoints the key may call. A key without the required scope for an endpoint receives a `403 forbidden` response — authentication succeeded, but the key is not authorised to perform that action.
+
+| Scope | Grants access to |
+|---|---|
+| `read:orders` | `GET /orders`, `GET /orders/{id}` |
+| `write:orders` | `POST /orders` |
+| `read:inventory` | `GET /inventory`, `GET /inventory/{id}` |
+| `write:inventory` | `POST /inventory`, `PATCH /inventory/{id}` |
+| `read:products` | `GET /products`, `GET /products/{id}` |
+| `write:products` | `POST /products` |
+| `read:tickets` | `GET /tickets`, `GET /tickets/{id}` |
+| `read:vendors` | `GET /vendors`, `GET /vendors/{id}` |
+| `read:customers` | `GET /customers`, `GET /customers/{id}` |
+
+<Tip>
+  Follow the principle of least privilege: assign only the scopes a key actually needs. A key used purely for reading orders does not need `write:orders` or any inventory scope.
+</Tip>
+
+### Scope error response
+
+When a key lacks the required scope, the API returns:
+
+```json
+{
+  "error": {
+    "message": "Missing required scope: write:orders",
+    "code": "forbidden"
+  }
+}
+```
+
+## Verifying a Key
+
+Use `GET /` to check that a key is valid and to inspect the scopes it carries. This endpoint requires no scope of its own and is safe to call as a health-check at startup.
+
+```bash
+curl https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/ \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+A successful response returns the store ID the key is bound to, its scopes, and the available resources:
+
+```json
+{
+  "data": {
+    "store_id": "sto_abc123",
+    "scopes": ["read:orders", "write:orders", "read:products"],
+    "resources": ["orders", "inventory", "products", "tickets", "vendors", "customers"]
+  }
+}
+```

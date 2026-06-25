@@ -1,0 +1,89 @@
+---
+title: "Creating Manual Orders: Fulfil Sales Outside Your Channels"
+sidebarTitle: "Create Orders"
+description: "Create manual orders for direct customers, B2B deals, and gifting. Manage order statuses, view the full transaction ledger, and handle refunds."
+---
+
+Manual orders let you fulfil sales that happen outside your connected channels — direct customer invoicing, B2B deals, replacement deliveries, or gifting. Rather than waiting for a marketplace integration to generate an order, you create one yourself and Tokensupply handles key delivery through the same secure customer portal your automated orders use.
+
+## Creating an order
+
+<Steps>
+  <Step title="Open the order form">
+    Navigate to **Orders → Create Order** in the sidebar to open the order creation form.
+  </Step>
+  <Step title="Select or create a customer">
+    Use the customer picker to search for an existing customer by name, email, or CUS-ID. If the customer doesn't exist yet, create them inline directly from the picker without leaving the form.
+  </Step>
+  <Step title="Add a product and set the price">
+    Select the product, enter the quantity, and set the unit price. Concatenated keys — where multiple key segments are combined into a single delivery — are supported if your product uses that format.
+  </Step>
+  <Step title="Submit the order">
+    Save the order. Tokensupply immediately generates a customer portal link and queues the delivery. Share the portal link with your customer or use **Re-send delivery** to email it automatically.
+  </Step>
+  <Step title="Order auto-completes on reveal">
+    The order status moves to **Completed** the moment the customer opens their portal link and clicks **Reveal** to unmask the key. No manual action is needed on your side.
+  </Step>
+</Steps>
+
+<Tip>
+  You can re-send the customer portal link at any time from the transaction detail page. Each re-send generates a fresh delivery token, so any previously shared link is automatically invalidated.
+</Tip>
+
+## Order statuses
+
+Every order in Tokensupply carries one of four statuses. The status updates automatically as the order moves through its lifecycle.
+
+| Status | Meaning |
+|--------|---------|
+| **Pending** | Order created, awaiting key delivery to the customer |
+| **Completed** | Customer revealed the key in the portal — delivery confirmed |
+| **Failed** | A delivery error occurred; review the transaction detail page |
+| **Refunded** | Refund processed — active portal links revoked, keys may return to inventory |
+
+<Note>
+  A **Pending** order means the portal link has been generated but the customer has not yet clicked **Reveal**. The key remains masked until they do.
+</Note>
+
+## Viewing all transactions
+
+The **Transactions → All Transactions** view is the unified ledger for every order across all your connected channels — Shopify, G2A, Eneba, and Manual alike.
+
+<Info>
+  The Key column has been removed from the ledger view to protect sensitive data. Use the platform-source filter to narrow by channel (for example, **Manual** or **Shopify**), and the Order ID search to find a specific transaction quickly.
+</Info>
+
+## Transaction detail page
+
+Click any order in the ledger to open its detail page. Here you can see:
+
+<CardGroup cols={3}>
+  <Card title="Platform Source" icon="plug">
+    Shows where the order originated — Manual, Shopify, G2A, Eneba, and so on.
+  </Card>
+  <Card title="Delivery Token" icon="key">
+    The most recent tokenised portal URL generated for this order.
+  </Card>
+  <Card title="Delivery Timeline" icon="clock">
+    A timestamped history of every delivery event, reveal, and status change for the order.
+  </Card>
+</CardGroup>
+
+## Refunds
+
+To refund an order, open the transaction detail page and trigger the refund action. Tokensupply immediately revokes all active customer portal links associated with that order, preventing the customer from revealing the key. Unrevealed keys may be returned to inventory depending on your refund configuration, keeping your stock counts accurate.
+
+<Warning>
+  Refunding an order permanently revokes the customer's portal link. If the customer has already revealed the key, the key cannot be recovered — contact your vendor for a replacement if needed.
+</Warning>
+
+## Custom order ID format
+
+By default, Tokensupply generates order IDs using a prefix and a zero-padded five-digit sequence — for example, `ORD-00042` or `TS2026-00001`. You can customise both the prefix and the starting sequence under **Settings → General → Order ID Format**.
+
+<Accordion title="Order ID format details">
+  - **Prefix** — any alphanumeric string, for example `ORD` or `TS2026`
+  - **Sequence** — always five digits, zero-padded from `00001` to `99999`
+  - The full format is `{PREFIX}-{00001}`
+  - Sequences are scoped to your store and never reused, even after a refund
+</Accordion>

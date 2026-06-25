@@ -1,0 +1,111 @@
+---
+title: "Vendor Portal: A Secure Workspace for Suppliers"
+sidebarTitle: "Vendor Portal"
+description: "Understand how the vendor portal works — invite suppliers, manage their access, and see exactly what they can and can't do in their scoped workspace."
+---
+
+The Vendor Portal is a separate, store-scoped workspace that gives your external suppliers a dedicated place to submit stock, upload invoices, manage their offers, and communicate with your team — without ever gaining access to your store's admin panel. Every portal is tied to a specific store, so vendors always know exactly which business they are working with.
+
+## Portal URLs
+
+Each store's vendor portal lives at a predictable URL based on the store's token ID. The same token ID used in the public store URL identifies the portal.
+
+| Page | URL |
+|---|---|
+| Sign-in / auth page | `tokensupply.in/s/{token_id}/vendor-portal` |
+| Setup page (from invite email) | `tokensupply.in/s/{token_id}/vendor-portal/setup?token=...` |
+| Portal home (after sign-in) | `tokensupply.in/s/{token_id}/vendor-portal` |
+
+<Note>
+  The portal is available even before your public store page is published. You can onboard vendors and begin procurement the moment your store exists — no need to wait for the storefront to go live.
+</Note>
+
+## Multi-store memberships
+
+Vendor accounts are stored in a dedicated `vendor_memberships` table, completely separate from platform user profiles. This architecture enables two important behaviours:
+
+- **One email, multiple stores.** A vendor can be a supplier for several different Tokensupply stores using the same email address. Signing in at `/s/genflix/vendor-portal` and `/s/another/vendor-portal` uses the same credentials, but each portal shows only that store's data.
+- **Vendors can also own stores.** The same email address can be a vendor on one store and the owner of a separate Tokensupply store simultaneously. The vendor portal auth page includes a "Need your own TokenSupply store? Go to main platform →" link to make the distinction clear.
+
+## Inviting a vendor
+
+<Steps>
+  <Step title="Send the invite">
+    On the vendor's detail page in your admin panel, click **Invite to Portal**. Tokensupply sends an email to the vendor's registered address containing a unique setup link. The email is sent via your configured SMTP connection, with Resend as an automatic fallback.
+  </Step>
+  <Step title="Vendor completes setup">
+    The vendor opens the setup link and creates a password for their account. If their email is already registered (for example, they are already a vendor on a different store), the setup page redirects them directly to the sign-in page with their email pre-filled — no duplicate account is created.
+  </Step>
+  <Step title="Vendor signs in">
+    After signing in, the vendor's membership for your store is automatically accepted. They land directly in the portal home — no additional confirmation step is needed on your end.
+  </Step>
+</Steps>
+
+### Managing portal access
+
+After sending an invite, the invitation card on the vendor detail page reflects the current state:
+
+| State | Description | Available actions |
+|---|---|---|
+| **No portal access** | No invite has been sent yet | **Invite to Portal** |
+| **Pending Access** | Invite sent, vendor has not completed setup | **Resend invite**, **Revoke invite** |
+| **Active** | Vendor has accepted and is signed in | **Revoke access** |
+
+Revoking access uses the `revoke_vendor_membership` function, which cleanly removes the vendor's membership without deleting their account. Revoking and re-inviting is safe — the new invite immediately supersedes the old one.
+
+## What vendors see in the portal
+
+The portal uses the same application layout as the admin panel but with a vendor-scoped sidebar. Everything vendors see is filtered to show only data that belongs to them within your store.
+
+<Accordion title="Dashboard">
+  The portal home shows the vendor's key performance indicators for your store — order volumes, revenue totals, and other activity metrics scoped to their account.
+</Accordion>
+
+<Accordion title="Products">
+  The vendor sees your full store catalogue and can submit a **Create Offer** request for any product you have marked as open to offers. They can also view and manage their own existing offers. Competitor offers, prices, and identities are never visible.
+</Accordion>
+
+<Accordion title="Purchase Orders">
+  Vendors see only POs assigned to them. Each PO detail page is fully featured — breadcrumb navigation, status indicators, invoice PDF download, the vendor-facing note field, and any attachments you've shared.
+</Accordion>
+
+<Accordion title="Inventory">
+  Vendors can submit stock directly for their POs from the Inventory section. Keys are masked by default and revealed only through the standard reveal modal — the same experience your admin team sees.
+</Accordion>
+
+<Accordion title="Tickets">
+  Only tickets that involve the vendor are visible. The conversation module works identically to the admin version — admin and support team names are visible, role badges are shown, and file attachments are supported.
+</Accordion>
+
+<Accordion title="Messages">
+  The vendor can access any message threads they participate in for your store.
+</Accordion>
+
+<Accordion title="Analytics">
+  Six-month trend lines and KPIs scoped entirely to the vendor's own activity — order counts, fulfilment rates, and revenue delivered.
+</Accordion>
+
+<Accordion title="Account">
+  Personal profile settings and security (password change). The **Billing**, **Team**, and **Integrations** sections available to store owners are not present in the vendor portal.
+</Accordion>
+
+## Sign-up is invite-only
+
+There is no self-service sign-up on the vendor portal. The auth page displays a sign-in form only — vendors can only join a store's portal through an explicit invite from a store admin. This ensures you have full control over who can see and interact with your procurement data.
+
+## Security model
+
+The vendor portal is secured at the database level, not just at the UI level. Access to every record — POs, products, inventory, tickets, files — is enforced by row-level security (RLS) policies that verify the current user holds an active `vendor_memberships` entry for the current store before returning any data.
+
+<CardGroup cols={2}>
+  <Card title="Vendor isolation" icon="shield-halved">
+    Vendors never see other vendors' offers, prices, purchase orders, or support tickets — regardless of which products overlap between them.
+  </Card>
+  <Card title="Billing blocked" icon="ban">
+    The store's master Billing page is explicitly blocked within the vendor portal route tree. Vendors have no path to view or modify your store's subscription or payment details.
+  </Card>
+</CardGroup>
+
+<Warning>
+  Revoking a vendor's portal access takes effect immediately at the RLS policy level. The vendor's active session is invalidated and they cannot retrieve any further data from your store.
+</Warning>

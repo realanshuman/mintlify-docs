@@ -1,0 +1,284 @@
+---
+title: "Orders API — Tokensupply"
+sidebarTitle: "Orders"
+description: "List, retrieve, and create orders in your Tokensupply store using the REST API with read:orders and write:orders scopes."
+---
+
+The Orders API lets you read and create orders in your store. Use `read:orders` to list and retrieve existing orders, and `write:orders` to create new ones. Each order links a product to a customer and optionally to a fulfilled inventory item, giving you a full audit trail of every sale.
+
+---
+
+## List Orders
+
+Retrieve a paginated list of all orders in your store, sorted by `created_at` descending.
+
+```
+GET /orders
+```
+
+**Required scope:** `read:orders`
+
+### Query Parameters
+
+<ParamField query="limit" type="integer" default="50">
+  Maximum number of orders to return. Cannot exceed `100`.
+</ParamField>
+
+<ParamField query="offset" type="integer" default="0">
+  Number of orders to skip before returning results. Use with `limit` to paginate.
+</ParamField>
+
+### Example Request
+
+```bash
+curl "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/orders?limit=20&offset=0" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+### Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": "ord_01hxyz",
+      "internal_order_id": "INT-00042",
+      "marketplace": "shopify",
+      "marketplace_order_id": "5001234567",
+      "status": "completed",
+      "payment_status": "paid",
+      "product_id": "prd_01abcd",
+      "customer_id": "cus_01efgh",
+      "inventory_item_id": "inv_01ijkl",
+      "quantity": 1,
+      "amount": 9.99,
+      "subtotal": 9.99,
+      "currency": "USD",
+      "key_delivered": true,
+      "delivered_at": "2024-06-01T12:34:56Z",
+      "created_at": "2024-06-01T12:30:00Z",
+      "updated_at": "2024-06-01T12:34:56Z"
+    }
+  ],
+  "pagination": {
+    "limit": 20,
+    "offset": 0,
+    "total": 84
+  }
+}
+```
+
+---
+
+## Retrieve an Order
+
+Fetch a single order by its ID.
+
+```
+GET /orders/{id}
+```
+
+**Required scope:** `read:orders`
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the order to retrieve.
+</ParamField>
+
+### Example Request
+
+```bash
+curl "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/orders/ord_01hxyz" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+### Example Response
+
+```json
+{
+  "data": {
+    "id": "ord_01hxyz",
+    "internal_order_id": "INT-00042",
+    "marketplace": "shopify",
+    "marketplace_order_id": "5001234567",
+    "status": "completed",
+    "payment_status": "paid",
+    "product_id": "prd_01abcd",
+    "customer_id": "cus_01efgh",
+    "inventory_item_id": "inv_01ijkl",
+    "quantity": 1,
+    "amount": 9.99,
+    "subtotal": 9.99,
+    "currency": "USD",
+    "key_delivered": true,
+    "delivered_at": "2024-06-01T12:34:56Z",
+    "created_at": "2024-06-01T12:30:00Z",
+    "updated_at": "2024-06-01T12:34:56Z"
+  }
+}
+```
+
+---
+
+## Create an Order
+
+Create a new order in your store. The product must belong to your store.
+
+```
+POST /orders
+```
+
+**Required scope:** `write:orders`
+
+### Request Body
+
+<ParamField body="product_id" type="string" required>
+  The ID of the product being ordered. Must belong to your store.
+</ParamField>
+
+<ParamField body="internal_order_id" type="string">
+  Your own reference ID for this order. Auto-generated if omitted.
+</ParamField>
+
+<ParamField body="marketplace" type="string">
+  The sales channel or marketplace where the order originated (e.g. `shopify`, `amazon`).
+</ParamField>
+
+<ParamField body="marketplace_order_id" type="string">
+  The order ID as it appears in the originating marketplace.
+</ParamField>
+
+<ParamField body="customer_id" type="string">
+  The ID of the customer placing the order.
+</ParamField>
+
+<ParamField body="quantity" type="integer">
+  Number of units ordered. Defaults to `1` if omitted.
+</ParamField>
+
+<ParamField body="amount" type="number">
+  The sale price of the order (e.g. `9.99`).
+</ParamField>
+
+<ParamField body="currency" type="string">
+  Three-letter ISO 4217 currency code (e.g. `USD`, `EUR`, `GBP`).
+</ParamField>
+
+<ParamField body="status" type="string">
+  Initial status of the order. Defaults to `pending` if omitted.
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X POST "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/orders" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "product_id": "prd_01abcd",
+    "quantity": 1,
+    "amount": 9.99,
+    "currency": "USD",
+    "marketplace": "shopify",
+    "marketplace_order_id": "5001234567"
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "data": {
+    "id": "ord_01hxyz",
+    "internal_order_id": "INT-00042",
+    "marketplace": "shopify",
+    "marketplace_order_id": "5001234567",
+    "status": "pending",
+    "payment_status": null,
+    "product_id": "prd_01abcd",
+    "customer_id": null,
+    "inventory_item_id": null,
+    "quantity": 1,
+    "amount": 9.99,
+    "subtotal": 9.99,
+    "currency": "USD",
+    "key_delivered": false,
+    "delivered_at": null,
+    "created_at": "2024-06-01T12:30:00Z",
+    "updated_at": "2024-06-01T12:30:00Z"
+  }
+}
+```
+
+---
+
+## Response Fields
+
+<ResponseField name="id" type="string">
+  Unique identifier for the order, assigned by Tokensupply.
+</ResponseField>
+
+<ResponseField name="internal_order_id" type="string">
+  Your internal reference ID. Auto-generated if not supplied at creation.
+</ResponseField>
+
+<ResponseField name="marketplace" type="string">
+  The sales channel or marketplace where the order originated.
+</ResponseField>
+
+<ResponseField name="marketplace_order_id" type="string">
+  The order's ID in the originating marketplace.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Current fulfilment status of the order (e.g. `pending`, `completed`).
+</ResponseField>
+
+<ResponseField name="payment_status" type="string">
+  Payment status of the order (e.g. `paid`, `unpaid`).
+</ResponseField>
+
+<ResponseField name="product_id" type="string">
+  ID of the product associated with this order.
+</ResponseField>
+
+<ResponseField name="customer_id" type="string">
+  ID of the customer associated with this order, if any.
+</ResponseField>
+
+<ResponseField name="inventory_item_id" type="string">
+  ID of the inventory item fulfilled for this order, once assigned.
+</ResponseField>
+
+<ResponseField name="quantity" type="integer">
+  Number of units ordered.
+</ResponseField>
+
+<ResponseField name="amount" type="number">
+  Sale price for the order.
+</ResponseField>
+
+<ResponseField name="subtotal" type="number">
+  Calculated subtotal for the order.
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Three-letter ISO 4217 currency code.
+</ResponseField>
+
+<ResponseField name="key_delivered" type="boolean">
+  Whether the fulfilment key has been delivered to the customer.
+</ResponseField>
+
+<ResponseField name="delivered_at" type="string">
+  ISO 8601 timestamp of when the key was delivered, or `null` if not yet delivered.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp of when the order was created.
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  ISO 8601 timestamp of the last update to the order.
+</ResponseField>

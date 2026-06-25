@@ -1,0 +1,140 @@
+---
+title: "API Reference Overview — Tokensupply"
+sidebarTitle: "Overview"
+description: "Everything you need to start using the Tokensupply REST API: base URL, authentication, scopes, pagination, and error handling."
+---
+
+The Tokensupply REST API gives you programmatic access to your store's orders, inventory, products, tickets, vendors, and customers. All requests travel over HTTPS, all bodies are JSON, and every response is scoped exclusively to the store that owns the API key — no key can read or write another store's data.
+
+## Base URL
+
+Every endpoint listed in this reference is relative to the following base URL:
+
+```
+https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api
+```
+
+## Authentication
+
+Authenticate every request by sending your API key as a Bearer token in the `Authorization` header. Create keys in **Settings → API** inside your Tokensupply dashboard. See the [Authentication](/api/authentication) page for full details on key creation, key format, and scopes.
+
+```bash
+curl https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/orders \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+<Note>
+  API keys are shown **once** at creation time. Store yours securely — Tokensupply only retains a SHA-256 hash and cannot recover the plaintext value for you.
+</Note>
+
+## Scopes
+
+Each API key carries one or more scopes that control which endpoints it may call. A request to an endpoint whose scope the key does not hold returns `403 forbidden`. You can verify a key's scopes at any time by calling `GET /` — no scope is required for that endpoint.
+
+| Scope | Grants access to |
+|---|---|
+| `read:orders` | `GET /orders`, `GET /orders/{id}` |
+| `write:orders` | `POST /orders` |
+| `read:inventory` | `GET /inventory`, `GET /inventory/{id}` |
+| `write:inventory` | `POST /inventory`, `PATCH /inventory/{id}` |
+| `read:products` | `GET /products`, `GET /products/{id}` |
+| `write:products` | `POST /products` |
+| `read:tickets` | `GET /tickets`, `GET /tickets/{id}` |
+| `read:vendors` | `GET /vendors`, `GET /vendors/{id}` |
+| `read:customers` | `GET /customers`, `GET /customers/{id}` |
+
+## Pagination
+
+All list endpoints support `limit` and `offset` query parameters. Results are ordered by `created_at` descending.
+
+| Parameter | Default | Maximum | Description |
+|---|---|---|---|
+| `limit` | `50` | `100` | Number of records to return |
+| `offset` | `0` | — | Number of records to skip |
+
+Every list response wraps results in a `data` array alongside a `pagination` object:
+
+```json
+{
+  "data": [ ... ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0,
+    "total": 128
+  }
+}
+```
+
+Single-resource responses return a `data` object instead of an array:
+
+```json
+{
+  "data": { ... }
+}
+```
+
+## Error Handling
+
+When a request fails, the API returns a standard HTTP status code and a JSON body with an `error` object containing a human-readable `message` and a machine-readable `code`.
+
+```json
+{
+  "error": {
+    "message": "Missing required scope: write:orders",
+    "code": "forbidden"
+  }
+}
+```
+
+| HTTP Status | Code | Meaning |
+|---|---|---|
+| `401` | `unauthorized` | Missing, malformed, invalid, or revoked key |
+| `401` | `expired` | Key has passed its expiry date |
+| `403` | `forbidden` | Key lacks the required scope |
+| `404` | `not_found` | Resource or route does not exist |
+| `422` | `validation` | Missing or invalid request fields |
+| `400` | `insert_error` / `update_error` / `query_error` | Database rejected the operation |
+| `500` | `internal` | Unexpected server error |
+
+<Tip>
+  Use the `code` field — not just the HTTP status — when handling errors in code. Both `unauthorized` and `expired` share the `401` status but require different responses (re-authenticate vs. renew the key).
+</Tip>
+
+## Quick Reference
+
+Use this table to find the endpoint and scope you need at a glance.
+
+| Method | Path | Required Scope |
+|---|---|---|
+| `GET` | `/` | — |
+| `GET` | `/orders` | `read:orders` |
+| `GET` | `/orders/{id}` | `read:orders` |
+| `POST` | `/orders` | `write:orders` |
+| `GET` | `/inventory` | `read:inventory` |
+| `GET` | `/inventory/{id}` | `read:inventory` |
+| `POST` | `/inventory` | `write:inventory` |
+| `PATCH` | `/inventory/{id}` | `write:inventory` |
+| `GET` | `/products` | `read:products` |
+| `GET` | `/products/{id}` | `read:products` |
+| `POST` | `/products` | `write:products` |
+| `GET` | `/tickets` | `read:tickets` |
+| `GET` | `/tickets/{id}` | `read:tickets` |
+| `GET` | `/vendors` | `read:vendors` |
+| `GET` | `/vendors/{id}` | `read:vendors` |
+| `GET` | `/customers` | `read:customers` |
+| `GET` | `/customers/{id}` | `read:customers` |
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api/authentication">
+    Learn how to create an API key, assign scopes, and send your key on every request.
+  </Card>
+  <Card title="Orders" icon="bag-shopping" href="/api/orders">
+    List, retrieve, and create orders in your store.
+  </Card>
+  <Card title="Inventory" icon="boxes-stacked" href="/api/inventory">
+    Manage your fulfilment keys and inventory items.
+  </Card>
+  <Card title="Products" icon="tag" href="/api/products">
+    List, retrieve, and create the products in your catalogue.
+  </Card>
+</CardGroup>

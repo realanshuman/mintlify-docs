@@ -1,0 +1,254 @@
+---
+title: "Webhook Events: Complete Reference Catalog"
+sidebarTitle: "Events"
+description: "Browse every Tokensupply webhook event type organised by resource. Find event names and the exact data payload fields delivered with each notification."
+---
+
+Every webhook delivery contains a top-level `event` string that identifies what happened and a `data` object with the resource fields relevant to that event. This page lists every available event type grouped by resource, along with the fields present in each payload's `data` object. For details on delivery format, signature verification, and retry behaviour, see the [Webhooks guide](/api/webhooks).
+
+<Note>
+  Subscribe only to the event types your integration actually needs. You can update subscriptions at any time in **Settings → Webhooks**.
+</Note>
+
+## Event catalog
+
+<Accordion title="Orders">
+
+Fired when an order changes state in any sales channel.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `order.created` | A new order is placed |
+| `order.completed` | An order is fulfilled and completed |
+| `order.refunded` | A refund is issued on an order |
+| `order.cancelled` | An order is cancelled |
+
+**`data` payload fields**
+
+| Field | Description |
+|---|---|
+| `id` | Internal order record ID |
+| `order_id` | Tokensupply order identifier |
+| `marketplace` | Sales channel the order came from |
+| `marketplace_order_id` | Order ID in the originating marketplace |
+| `status` | Current order status |
+| `payment_status` | Payment state of the order |
+| `product_id` | ID of the product ordered |
+| `customer_id` | ID of the customer who placed the order |
+| `quantity` | Number of units ordered |
+| `amount` | Order total |
+| `currency` | Three-letter currency code |
+| `created_at` | ISO 8601 timestamp of order creation |
+
+</Accordion>
+
+<Accordion title="Inventory">
+
+Fired when inventory items are added, sold, or when stock for a product runs low.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `inventory.created` | New inventory items are added to a product |
+| `inventory.sold` | An inventory item is delivered to a customer |
+| `inventory.low_stock` | Available stock for a product drops to 5 or fewer units |
+
+**`data` payload fields — `inventory.created` and `inventory.sold`**
+
+| Field | Description |
+|---|---|
+| `id` | Inventory item ID |
+| `ref_id` | External reference identifier |
+| `product_id` | ID of the associated product |
+| `purchase_order_id` | ID of the purchase order that sourced this item |
+| `status` | Current item status |
+| `expiry_date` | Expiry date of the item, if applicable |
+| `created_at` | ISO 8601 timestamp of item creation |
+
+**`data` payload fields — `inventory.low_stock`**
+
+| Field | Description |
+|---|---|
+| `product_id` | ID of the product with low stock |
+| `available` | Current number of available units |
+| `threshold` | Stock level that triggered the alert |
+
+<Warning>
+  The raw inventory value (the key or secret you sell) is **never** included in any webhook payload. Webhook data is safe to log and forward without risk of exposing customer credentials.
+</Warning>
+
+</Accordion>
+
+<Accordion title="Tickets">
+
+Fired when a support ticket is created or its status changes.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `ticket.created` | A new support ticket is opened |
+| `ticket.updated` | A ticket's details or status are updated |
+| `ticket.resolved` | A ticket is marked resolved |
+
+**`data` payload fields**
+
+| Field | Description |
+|---|---|
+| `id` | Ticket record ID |
+| `ticket_code` | Human-readable ticket reference code |
+| `title` | Ticket subject or title |
+| `issue_type` | Category of the reported issue |
+| `severity` | Severity level assigned to the ticket |
+| `status` | Current ticket status |
+| `order_id` | ID of the related order, if any |
+| `product_id` | ID of the related product, if any |
+| `seller_id` | ID of the seller the ticket is assigned to |
+| `created_at` | ISO 8601 timestamp of ticket creation |
+
+</Accordion>
+
+<Accordion title="Purchase Orders">
+
+Fired when a purchase order is created or payment is confirmed.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `purchase_order.created` | A new purchase order is raised |
+| `purchase_order.paid` | Payment for a purchase order is confirmed |
+
+**`data` payload fields**
+
+| Field | Description |
+|---|---|
+| `id` | Purchase order record ID |
+| `po_number` | Human-readable purchase order number |
+| `seller_id` | ID of the seller who owns the PO |
+| `product_id` | ID of the product being purchased |
+| `quantity` | Number of units on the purchase order |
+| `status` | Current purchase order status |
+| `total_value` | Total value of the purchase order |
+| `currency` | Three-letter currency code |
+| `created_at` | ISO 8601 timestamp of PO creation |
+
+</Accordion>
+
+<Accordion title="Vendors">
+
+Fired when a vendor is added to your account.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `vendor.created` | A new vendor is created |
+
+**`data` payload fields**
+
+| Field | Description |
+|---|---|
+| `id` | Vendor record ID |
+| `name` | Vendor display name |
+| `email` | Vendor contact email address |
+| `seller_type` | Type of seller account |
+| `status` | Current vendor status |
+| `created_at` | ISO 8601 timestamp of vendor creation |
+
+</Accordion>
+
+<Accordion title="Products">
+
+Fired when a product is created, updated, or removed from your catalog.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `product.created` | A new product is added to the catalog |
+| `product.updated` | A product's details are changed |
+| `product.deleted` | A product is deleted from the catalog |
+
+**`data` payload fields**
+
+| Field | Description |
+|---|---|
+| `id` | Product record ID |
+| `name` | Product display name |
+| `sku` | Stock-keeping unit identifier |
+| `product_type` | Type classification of the product |
+| `status` | Current product status |
+| `category` | Product category |
+| `brand` | Brand associated with the product |
+| `created_at` | ISO 8601 timestamp of product creation |
+
+</Accordion>
+
+<Accordion title="Customers">
+
+Fired when a customer account is created or their details change.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `customer.created` | A new customer account is created |
+| `customer.updated` | A customer's details are updated |
+
+**`data` payload fields**
+
+| Field | Description |
+|---|---|
+| `id` | Customer record ID |
+| `first_name` | Customer's first name |
+| `last_name` | Customer's last name |
+| `email` | Customer's email address |
+| `customer_type` | Type of customer account |
+| `country` | Customer's country |
+| `created_at` | ISO 8601 timestamp of account creation |
+
+</Accordion>
+
+<Accordion title="Integrations">
+
+Fired when a marketplace or sales channel integration is connected or disconnected.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `integration.connected` | A marketplace integration is successfully connected |
+| `integration.disconnected` | A marketplace integration is removed or loses access |
+
+**`data` payload fields**
+
+| Field | Description |
+|---|---|
+| `id` | Integration record ID |
+| `marketplace` | Name of the marketplace or sales channel |
+| `is_active` | Whether the integration is currently active |
+| `created_at` | ISO 8601 timestamp of integration creation |
+
+<Note>
+  Integration credentials (API keys, OAuth tokens, etc.) are **never** included in webhook payloads.
+</Note>
+
+</Accordion>
+
+<Accordion title="Test">
+
+Use the `ping` event to confirm that your endpoint is reachable and your signature verification logic is working correctly.
+
+**Event types**
+
+| Event | When it fires |
+|---|---|
+| `ping` | Manually, when you click **Send test** on an endpoint in Settings → Webhooks |
+
+The `ping` event delivers a minimal payload with no meaningful `data` fields. Use it to validate your endpoint setup end-to-end before going live with real events.
+
+</Accordion>

@@ -1,0 +1,91 @@
+---
+title: "Notifications: Configure Email Alerts and Digest Frequency"
+sidebarTitle: "Notifications"
+description: "Control which store events trigger email alerts, set digest frequency per event type, and understand how in-app and email notifications work together."
+---
+
+TokenSupply keeps you and your team informed about everything happening in your store — from new support tickets to expiring inventory and low credit balances. You can tailor exactly which events send you an email and how often they arrive, so your inbox stays relevant without becoming overwhelming. Critical events always surface in-app even when email is paused, so nothing falls through the cracks.
+
+## Notification types
+
+TokenSupply generates notifications for the following categories of events:
+
+<CardGroup cols={2}>
+  <Card title="PO Updates" icon="file-invoice">
+    Status changes on purchase orders, invoice and stock file approvals, and due-date reminders for outstanding POs.
+  </Card>
+  <Card title="Ticket Events" icon="ticket">
+    New support tickets, replies from customers or vendors, and ticket resolutions — keeping your support team in the loop at every stage.
+  </Card>
+  <Card title="Team Changes" icon="users">
+    Notifications when a new staff member or vendor joins your store, and when a team member's role is updated.
+  </Card>
+  <Card title="Expiring Inventory" icon="hourglass-end">
+    Alerts when keys in your inventory are approaching the expiry window you configured — giving you time to act before they become invalid.
+  </Card>
+  <Card title="Low Stock" icon="boxes-stacked">
+    Triggered when a product's available inventory drops below your configured threshold, prompting a restock before you run out.
+  </Card>
+  <Card title="Stock File Rejected" icon="file-circle-xmark">
+    Notifies you when a vendor's uploaded stock file fails validation — the vendor needs to correct and re-upload before orders can fulfil.
+  </Card>
+  <Card title="Low Credits" icon="coins">
+    Sent when your billing credit balance approaches its limit, so you can top up before service is interrupted.
+  </Card>
+</CardGroup>
+
+## In-app notifications
+
+Every notification also appears in the **in-app notification timeline**, accessible by clicking the **bell icon** in the topbar. The timeline shows a chronological feed of all recent events with timestamps, links to the relevant entity (ticket, PO, product, etc.), and read/unread state. This gives you a real-time view of activity without leaving the platform.
+
+<Tip>
+  Critical events — such as stock file rejections and low credit alerts — always appear in-app even if you have email paused for that notification type. Check the bell regularly if you reduce your email frequency.
+</Tip>
+
+## Configuring email preferences
+
+<Steps>
+  <Step title="Open Notifications settings">
+    In the sidebar, click **Settings**, then select the **Notifications** tab.
+  </Step>
+  <Step title="Choose which events email you">
+    For each notification type, toggle email delivery on or off based on your preferences.
+  </Step>
+  <Step title="Set digest frequency">
+    For each email-enabled event type, select how often you want to receive emails:
+
+    | Frequency | Behaviour |
+    |-----------|-----------|
+    | **Instant** | An email is sent immediately when the event occurs |
+    | **Hourly** | Events are batched and delivered once per hour |
+    | **Daily** | A single digest email covers all events from the past 24 hours |
+    | **Weekly** | A summary of the past 7 days' events arrives on your chosen day |
+  </Step>
+  <Step title="Save your preferences">
+    Click **Save** to apply. Changes take effect immediately for new events.
+  </Step>
+</Steps>
+
+## Email delivery
+
+<Info>
+  Notification emails are sent through your configured SMTP server (see [SMTP Email Setup](/settings/smtp-email-setup)). If your SMTP server is unavailable, TokenSupply falls back to Resend automatically to ensure delivery. You do not need to take any action when a fallback occurs.
+</Info>
+
+## Per-role notification visibility
+
+Different team roles receive notifications relevant to their responsibilities:
+
+| Notification type | Super Admin | Admin | Support |
+|-------------------|:-----------:|:-----:|:-------:|
+| PO updates | ✅ | ✅ | ❌ |
+| Ticket events | ✅ | ✅ | ✅ |
+| Team changes | ✅ | ✅ | ❌ |
+| Expiring inventory | ✅ | ✅ | ❌ |
+| Low stock | ✅ | ✅ | ❌ |
+| Stock file rejected | ✅ | ✅ | ❌ |
+| Low credits | ✅ | ✅ | ❌ |
+
+<Note>
+  Support team members receive ticket-related notifications to keep them active on open cases but are not notified about billing, inventory, or administrative team events.
+</Note>

@@ -1,0 +1,82 @@
+---
+title: "Account Security: 2FA, Sessions, and Profile Settings"
+sidebarTitle: "Security"
+description: "Update your profile, enable TOTP two-factor authentication, manage active sessions, recover your password, and understand vendor portal sign-in."
+---
+
+Your TokenSupply account settings cover two areas: your personal profile (name, avatar, email) and security controls (two-factor authentication, sessions, and password recovery). Access them from the user menu in the topbar or by navigating directly to `/account`. Keeping your account secure protects both your store data and the customers and vendors who depend on it.
+
+## Personal profile settings
+
+Navigate to **user menu → /account** (or go to `/account` directly) to open your account page. It has two tabs: **Profile** and **Security**.
+
+<CardGroup cols={2}>
+  <Card title="Profile tab" icon="user">
+    Update your display name, upload or change your avatar, and change the email address associated with your account.
+  </Card>
+  <Card title="Security tab" icon="shield-halved">
+    Enable or manage two-factor authentication (TOTP), view active sessions, and access password recovery options.
+  </Card>
+</CardGroup>
+
+## Two-factor authentication (2FA)
+
+TokenSupply supports **TOTP (Time-based One-Time Password)** for two-factor authentication. Any standard authenticator app works — including 1Password, Authy, and Google Authenticator.
+
+<Steps>
+  <Step title="Open the Security tab">
+    Go to `/account` and click the **Security** tab.
+  </Step>
+  <Step title="Enable 2FA">
+    Click **Enable Two-Factor Authentication**. A QR code and setup key are displayed.
+  </Step>
+  <Step title="Scan with your authenticator app">
+    Open your authenticator app and scan the QR code. The issuer registers as **tokensupply.in**, so the code appears under a clearly labelled entry in your app.
+  </Step>
+  <Step title="Enter the confirmation code">
+    Type the current 6-digit TOTP code from your authenticator app to confirm the setup was successful.
+  </Step>
+  <Step title="Save your backup codes">
+    Store the provided backup codes in a safe place. You will need them if you lose access to your authenticator app.
+  </Step>
+</Steps>
+
+Once enabled, every sign-in requires your password plus a TOTP code — this is the **AAL2 (Authenticator Assurance Level 2)** step — meaning stolen credentials alone are not enough to access your account.
+
+<Warning>
+  If you lose access to your authenticator app and your backup codes, account recovery requires contacting TokenSupply support. Store your backup codes somewhere secure (a password manager works well).
+</Warning>
+
+## Sessions and password recovery
+
+- Signing out from any active session terminates access immediately — there is no delay or grace period.
+- To reset your password, navigate to **/reset-password**. The recovery flow uses MFA-aware bypass logic, so you will not get permanently locked out if you are mid-2FA setup when requesting a reset.
+
+<Tip>
+  If you are locked out and cannot receive a password reset email (for example, if your from-email SMTP is misconfigured), ensure Resend fallback is active — critical account emails route through it automatically.
+</Tip>
+
+## Vendor portal sign-in
+
+The vendor portal is entirely separate from the main TokenSupply platform and has its own distinct sign-in page.
+
+| Aspect | Staff accounts | Vendor accounts |
+|--------|---------------|-----------------|
+| **Sign-in URL** | Main platform | `/s/{token_id}/vendor-portal` |
+| **Self sign-up** | Invite only | Invite only |
+| **Multi-store access** | One store per account | Same email can be a vendor on multiple stores |
+| **Conflict with store ownership** | N/A | A vendor email can also own a separate TokenSupply store |
+
+When a vendor with an existing TokenSupply account is invited to a new store and clicks their setup link, they are redirected to the sign-in page with their email pre-filled — they are not prompted to create a new password, since their account already exists.
+
+<Note>
+  Each vendor invite creates a `vendor_memberships` record scoped to that specific store. Accepting an invite on one store does not grant access to any other store, even if the same email is invited to multiple stores.
+</Note>
+
+## Account deletion
+
+The **Delete Account** option is only available to **Super Admins** of store-owning accounts. Team members (Admin, Support) and Vendors do not see this option — it is hidden from their account pages entirely.
+
+<Warning>
+  Deleting your account is permanent and irreversible. All store data — products, orders, inventory, and team memberships — is removed. Ensure you have exported any records you need before proceeding.
+</Warning>

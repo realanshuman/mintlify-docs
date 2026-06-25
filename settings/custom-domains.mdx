@@ -1,0 +1,80 @@
+---
+title: "Custom Domains: Connect Your Brand to Your Storefront"
+sidebarTitle: "Custom Domains"
+description: "Point your own domain at your TokenSupply storefront by adding three DNS records, then verify to get an auto-provisioned SSL certificate."
+---
+
+Connecting a custom domain replaces your default TokenSupply storefront URL with a branded address you own — for example, `store.yourbrand.com`. TokenSupply handles SSL certificate provisioning automatically once your DNS records verify, so there is no manual certificate management on your end. The process involves three DNS changes, a single click to trigger verification, and a propagation window of up to 72 hours.
+
+## Adding your domain
+
+<Steps>
+  <Step title="Open the Domain tab">
+    In the sidebar, click **Settings**, then select the **Domain** tab.
+  </Step>
+  <Step title="Add your domain">
+    Click **Add Domain** and type the domain or subdomain you want to connect (e.g. `store.yourbrand.com`).
+  </Step>
+  <Step title="Add the required DNS records">
+    Log in to your DNS provider (Cloudflare, Route 53, Namecheap, etc.) and add all three records shown in the table below. You will see the exact TXT verification value on the Domain tab after entering your domain.
+  </Step>
+  <Step title="Verify and connect">
+    Return to TokenSupply and click **Verify & Connect**. The platform checks your DNS records and, once confirmed, automatically provisions an SSL certificate for your domain.
+  </Step>
+</Steps>
+
+## Required DNS records
+
+Add all three of the following records at your DNS provider:
+
+| Type | Name / Host | Value |
+|------|-------------|-------|
+| **A** | `@` | `185.158.133.1` |
+| **A** | `www` | `185.158.133.1` |
+| **TXT** | `_lovable` | The unique verification value shown on your Domain tab |
+
+<Note>
+  The `_lovable` TXT record value is unique to your store. Copy it directly from **Settings → Domain** after entering your domain — do not guess or reuse a value from another store.
+</Note>
+
+## Domain statuses
+
+After clicking **Verify & Connect**, your domain moves through the following statuses:
+
+<CardGroup cols={3}>
+  <Card title="Verifying" icon="clock">
+    TokenSupply is waiting for your DNS records to propagate. No action needed — check back after a few hours.
+  </Card>
+  <Card title="Active" icon="circle-check">
+    DNS verified and SSL provisioned. Your storefront is live on your custom domain.
+  </Card>
+  <Card title="Failed" icon="circle-xmark">
+    The DNS check failed. Review your records for typos or missing entries and click **Verify & Connect** again.
+  </Card>
+</CardGroup>
+
+## DNS propagation
+
+<Warning>
+  DNS propagation can take **up to 72 hours**, though it often completes within a few hours. Your storefront will continue to operate on your default TokenSupply URL during this window — no downtime occurs.
+</Warning>
+
+Use [DNSChecker.org](https://dnschecker.org) to track propagation progress across global DNS servers before clicking **Verify & Connect**. Confirming that your A and TXT records are visible worldwide reduces the chance of a **Failed** status.
+
+## Troubleshooting
+
+<Accordion title="My domain shows 'Failed' after I added all three records">
+  Double-check the following:
+  - The `@` A record points to exactly `185.158.133.1` with no trailing characters.
+  - The `_lovable` TXT record value is copied exactly from your Domain tab — no extra spaces.
+  - Your DNS provider has saved the changes (some providers require an explicit save step).
+  - Allow at least a few hours before re-attempting verification. Run a check on [DNSChecker.org](https://dnschecker.org) first to confirm the records are visible globally.
+</Accordion>
+
+<Accordion title="I added the records but the status stays on 'Verifying' for over 24 hours">
+  Some DNS providers cache changes aggressively. Confirm the records are globally visible using DNSChecker, then trigger another verification attempt from **Settings → Domain → Verify & Connect**. If the issue persists after 72 hours, contact support.
+</Accordion>
+
+<Accordion title="I want to use a subdomain instead of the root domain">
+  You can connect a subdomain (e.g. `shop.yourbrand.com`) — simply enter the full subdomain when adding your domain. Add the A record for the subdomain name instead of `@`, and still add the `www` A record and `_lovable` TXT record as shown.
+</Accordion>

@@ -1,0 +1,183 @@
+---
+title: "Purchase Orders: Procure Stock from Vendors"
+sidebarTitle: "Purchase Orders"
+description: "Create, confirm, and manage purchase orders — from drafting through stock collection, invoice review, and closure."
+---
+
+Purchase orders (POs) are the formal records of every stock procurement you make through Tokensupply. They capture pricing, tax, payment terms, and the actual inventory received — and they drive the full supplier workflow from first contact to stock hitting your catalogue. Open the PO list from **Purchases → Purchase Orders**.
+
+## List view
+
+The list view is your central hub for monitoring procurement activity. Filter tabs at the top let you quickly isolate POs by status:
+
+<CardGroup cols={3}>
+  <Card title="All" icon="list">All purchase orders regardless of status</Card>
+  <Card title="Draft" icon="pencil">Saved but not yet sent to the vendor</Card>
+  <Card title="Confirmed" icon="send">Shared with the vendor, awaiting payment</Card>
+  <Card title="Payment Pending" icon="clock">Payment is in progress</Card>
+  <Card title="Paid" icon="circle-check">Payment confirmed by both parties</Card>
+  <Card title="Closed" icon="lock">Procurement complete and locked</Card>
+</CardGroup>
+
+You can also search by PO number, vendor name, or product; filter by vendor; sort by PO number, date, total, or vendor; and export the current view to **CSV**. The list paginates at **15 POs per page**.
+
+## Creating a purchase order
+
+Click **New Purchase Order** to open the creation form. The form is grouped into labelled cards — work through each section in sequence.
+
+<Steps>
+  <Step title="Choose a vendor">
+    Select the vendor from the **Vendor** card. The badge on each result shows whether the vendor is an **Individual** (blue) or a **Business** (orange). Once you select a vendor, the form pre-fills the **currency** and **payment terms** from their profile.
+  </Step>
+
+  <Step title="Select a product">
+    Pick the product you are procuring from the **Product** card. If a vendor offer already exists for this vendor–product pair, the **unit price** and **delivery time** are automatically filled in for you.
+  </Step>
+
+  <Step title="Set quantity, price, and currency">
+    Enter the **Quantity** and confirm the **Unit Price**. Override the auto-filled price if you have negotiated a different rate. The **Currency** defaults to the vendor's currency but can be changed per PO.
+  </Step>
+
+  <Step title="Confirm tax">
+    Tax is calculated automatically based on your store's country and the vendor's country.
+
+    - **Business vendors** — Tokensupply derives the applicable tax rate and label (for example, **GST 18%** for an Indian vendor and Indian store, or **0% reverse charge** for certain EU cross-border scenarios). Toggle **Tax Inclusive** if the vendor's quoted unit price already includes tax.
+    - **Individual vendors** — tax is fixed at **0%** with no override available.
+  </Step>
+
+  <Step title="Add cost adjustments (optional)">
+    Use the **Cost Adjustments** section to add labelled line items for discounts or additional charges — for example, shipping, handling fees, or foreign exchange costs. Each adjustment has a label, a value, and a type (discount or charge).
+  </Step>
+
+  <Step title="Set terms and delivery">
+    Complete the **Terms & Delivery** card:
+
+    - **Payment Terms** — defaults from the vendor profile, overridable per PO
+    - **Due Date** — the date by which payment must be made
+    - **Delivery Method** — defaults to Email
+    - **Vendor Note** — a message visible to the vendor on their portal
+    - **Tags** — add up to 8 tags for internal organisation
+  </Step>
+
+  <Step title="Attach an invoice (optional)">
+    Upload a vendor invoice at creation time if you have it on hand. The file lands immediately in **Pending Review** status so you can approve or reject it on the PO detail page.
+  </Step>
+
+  <Step title="Save or confirm">
+    Click **Save as Draft** to keep editing the PO without notifying anyone. Click **Confirm** to formally send the PO — this triggers an email to the vendor and your admins via `send-po-email`.
+  </Step>
+</Steps>
+
+## PO numbering
+
+Tokensupply generates PO numbers automatically using the `generate_po_number` function. The format is:
+
+```
+PO-{VENDOR_CODE}-{SEQUENCE}
+```
+
+For example, PO number **42** for a vendor with code `SLR-001` produces `PO-SLR-001-0042`. Sequences are scoped per vendor, per store — so each vendor has their own independent counter.
+
+## PO lifecycle
+
+Every PO moves through up to five statuses. Advance the status with the **Mark as [Next Status]** button. To revert one step, use the **Undo** action. Tokensupply records a timestamp for each transition and sends a status-change email automatically.
+
+| Status | Displayed as | What it means |
+|---|---|---|
+| `draft` | **Draft** | Saved, not yet sent to the vendor |
+| `sent` | **Confirmed** | Shared with the vendor, awaiting payment |
+| `payment_pending` | **Payment Pending** | Payment is in progress |
+| `paid` | **Paid** | Payment confirmed |
+| `closed` | **Closed** | Procurement complete and locked |
+
+<Note>
+  Stock collection is **not** a separate lifecycle status — it runs in parallel with the lifecycle and is tracked on the same PO detail page.
+</Note>
+
+## Invoice workflow
+
+Vendors and admins can upload an invoice against any PO that is at **Confirmed** status or later.
+
+<Steps>
+  <Step title="Upload">
+    The vendor uploads (or you upload on their behalf) an invoice file from the PO detail page. The invoice status immediately becomes **Pending Review**.
+  </Step>
+  <Step title="Review">
+    Open the **Review** dialog on the PO. You can **Approve** or **Reject** the invoice. If you reject it, add a note explaining what needs to be corrected.
+  </Step>
+  <Step title="Outcome">
+    The decision and any notes are stored on the PO and appear in the activity timeline. Vendors can see the outcome from their portal.
+  </Step>
+</Steps>
+
+## Stock collection workflow
+
+Once a PO is at **Confirmed** status, the vendor (or an admin) can submit stock using the **Stock** card on the PO detail page.
+
+<Steps>
+  <Step title="Enter keys">
+    Paste licence keys or codes **one per line** into the input field. For **Account** products, each line must use the format `username | password`.
+  </Step>
+  <Step title="Optional bulk import">
+    Import a **CSV** or **TXT** file if you have a large batch of keys to submit at once.
+  </Step>
+  <Step title="Set an expiry date (optional)">
+    Apply an optional expiry date to all items in this submission. The date is recorded per-item in inventory.
+  </Step>
+  <Step title="Review duplicate warnings">
+    Tokensupply checks each key against existing inventory in real time. Duplicate keys are flagged inline with a **⚠️ DUPLICATE** warning before submission — you can remove them before proceeding.
+  </Step>
+  <Step title="Submit">
+    Submit the batch. Submissions are capped at the remaining unfulfilled quantity on the PO. When the submitted count reaches the PO quantity, Tokensupply records `stock_collected_at` and the items appear under the linked product's **Inventory** tab.
+  </Step>
+</Steps>
+
+<Warning>
+  **Reset Stock** clears all inventory linked to this PO and resets the collection marker. Use it only if you need to re-submit an entirely new batch — it cannot be undone selectively.
+</Warning>
+
+## More actions
+
+The **⋯** menu on any PO detail page gives you four additional options:
+
+<CardGroup cols={2}>
+  <Card title="Edit" icon="pencil">
+    Modify the PO. Only available for POs that have not yet been closed.
+  </Card>
+  <Card title="Duplicate" icon="copy">
+    Pre-fill a brand-new PO from this one — useful for recurring orders with the same vendor and product.
+  </Card>
+  <Card title="Download PDF" icon="file-arrow-down">
+    Generate and download the PO as a PDF (see below for contents).
+  </Card>
+  <Card title="Delete" icon="trash">
+    Permanently delete the PO. Requires you to type **DELETE** to confirm. Linked tickets are unlinked and PO notes are removed.
+  </Card>
+</CardGroup>
+
+## PO PDF
+
+The PDF is generated client-side and contains everything needed for formal record-keeping and payment:
+
+- Both parties' addresses and tax IDs
+- Itemised line items with quantities and unit prices
+- Cost adjustments (discounts and additional charges)
+- Full tax breakdown and totals
+- The vendor's banking details (IFSC / SWIFT / IBAN / UPI / PayPal, depending on their country)
+
+For **Individual** vendors, the PDF includes a **Tax Declaration** block in place of the standard tax section.
+
+## Notes and team collaboration
+
+<Tabs>
+  <Tab title="PO Notes (internal)">
+    The **PO Notes** card on the detail page is a **team-only thread** — vendors never see it. Use it for internal discussions about the order, such as payment approvals or sourcing decisions. Each note displays the author's name and a colour-coded role badge (**Admin** or **Support**).
+  </Tab>
+  <Tab title="Vendor Note (vendor-facing)">
+    The **Vendor Note** is a single message field set during PO creation or editing. It appears on the vendor's portal and on the PO PDF. Use it for delivery instructions, special requirements, or anything the vendor needs to know.
+  </Tab>
+</Tabs>
+
+## Due-date reminders
+
+Tokensupply runs a daily check (`po-due-date-cron`) and automatically sends reminder emails and in-app notifications when a PO is approaching or has passed its due date. No manual setup is required — reminders fire based on the due date you set in **Terms & Delivery**.

@@ -1,0 +1,68 @@
+---
+title: "Store Branding: Logo and Colour Configuration Guide"
+sidebarTitle: "Branding"
+description: "Upload your store logo and set brand colours so every customer touchpoint — topbar, portal, emails, and PDFs — reflects your identity."
+---
+
+Your store's visual identity flows from a single place: **Settings → General → Branding**. Upload your logo once and TokenSupply automatically applies it across every customer-facing surface, from the admin topbar to emailed invoices. Keeping your branding consistent here means you never have to update individual templates or documents when your logo changes.
+
+## Uploading your logo
+
+<Steps>
+  <Step title="Open General Settings">
+    In the sidebar, click **Settings**, then select the **General** tab.
+  </Step>
+  <Step title="Locate the Branding section">
+    Scroll to the **Branding** section on the General tab.
+  </Step>
+  <Step title="Upload your logo file">
+    Click the upload area and select a **PNG** or **SVG** file. SVG is recommended for sharp rendering at all sizes. Your image is stored securely in the public `store-logos` bucket.
+  </Step>
+  <Step title="Save changes">
+    Click **Save** to apply the new logo. The update propagates immediately across all surfaces listed below.
+  </Step>
+</Steps>
+
+## Where your logo appears
+
+Once uploaded, your logo is automatically displayed in the following places:
+
+<CardGroup cols={2}>
+  <Card title="Admin Topbar" icon="display">
+    Appears in the top-left corner of the admin app so your team always sees your brand while working.
+  </Card>
+  <Card title="Customer Delivery Portal" icon="box-open">
+    Shown to customers when they access their order delivery page, reinforcing trust at the moment of fulfillment.
+  </Card>
+  <Card title="Email Headers" icon="envelope-open">
+    Displayed at the top of every transactional email sent through your SMTP or via the Resend fallback.
+  </Card>
+  <Card title="Invoice & PO PDFs" icon="file-pdf">
+    Embedded in generated invoice and purchase order PDFs so your documents look professional and branded.
+  </Card>
+</CardGroup>
+
+## Colour settings
+
+TokenSupply uses a carefully considered default palette optimised for long working sessions and data legibility:
+
+| Element | Colour |
+|---------|--------|
+| **Header background** | Deep navy — `#121621` |
+| **Workspace background** | Off-white — `#f7f8f9` |
+| **Accent** | TokenSupply amber |
+
+<Tip>
+  The deep navy header paired with an off-white workspace background is intentionally designed to reduce eye strain during extended use. If you customise colours, test your palette at length before committing.
+</Tip>
+
+## Supported file formats
+
+| Format | Recommended use |
+|--------|----------------|
+| **SVG** | Best choice — scales perfectly at any resolution, smallest file size |
+| **PNG** | Use a high-resolution version (at least 400 × 400 px) for clear rendering on retina displays |
+
+<Note>
+  Avoid JPEG or GIF logos — lossy compression and limited transparency support can cause your logo to appear blurry or with a white background box in email clients.
+</Note>

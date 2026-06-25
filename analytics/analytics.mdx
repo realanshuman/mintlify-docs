@@ -1,0 +1,82 @@
+---
+title: "Analytics: Revenue, Products, Vendors, and Customers"
+sidebarTitle: "Analytics"
+description: "Explore your store's performance across four analytics tabs — revenue overview, product rankings, vendor quality, and customer mix — with flexible date ranges."
+---
+
+The **Analytics** page gives you a SaaS-style dashboard built on Recharts, covering every dimension of your store's performance — from top-line revenue to individual vendor quality scores. Open it by clicking **Analytics** in the sidebar. A **Reports** entry sits next to Analytics in the sidebar and is currently a Coming Soon placeholder for scheduled exports — Analytics is where all current data lives.
+
+## Date range
+
+Before diving into the tabs, set your date range using the date picker at the top of the page. All KPI cards and charts update instantly to reflect the selected period.
+
+| Preset | Period covered |
+|--------|---------------|
+| **Last 7 days** | Rolling 7-day window ending today |
+| **Last 30 days** | Rolling 30-day window ending today |
+| **Last 6 months** | Rolling 6-month window ending today |
+| **Custom** | Pick any start and end date |
+
+<Tip>
+  Use the **Last 30 days** preset for monthly business reviews and **Custom** when you need to compare a specific promotional period or quarter against a prior period.
+</Tip>
+
+## Revenue calculation
+
+<Info>
+  Revenue figures across all Analytics tabs are calculated as **net of refunds** and include only **completed orders**. Pending orders, failed payments, and refunded transactions are excluded to give you an accurate view of cash earned.
+</Info>
+
+## Analytics tabs
+
+<Tabs>
+  <Tab title="Overview">
+    The Overview tab shows your top-line store performance across the selected date range:
+
+    - **Revenue** — net revenue from completed orders, excluding refunds
+    - **Orders** — total number of completed orders in the period
+    - **Average Order Value (AOV)** — revenue divided by order count
+    - **Channel mix** — breakdown of orders by sales channel (e.g. storefront, API, manual)
+
+    KPI cards at the top of the tab summarise the headline numbers at a glance. Charts below break them down over time so you can spot trends, seasonal patterns, and the impact of promotions.
+  </Tab>
+  <Tab title="Products">
+    The Products tab helps you understand which items are driving your business and which are underperforming:
+
+    - **Top sellers** — products ranked by revenue contribution in the selected period
+    - **Lowest-margin items** — products where cost of goods is closest to sale price, flagging candidates for repricing or vendor renegotiation
+    - **Product drill-down** — click any product to see its individual revenue, order volume, refund rate, and inventory turnover
+
+    Use this tab to make informed restocking decisions and to identify which products are worth negotiating better vendor prices on.
+  </Tab>
+  <Tab title="Vendors">
+    The Vendors tab tracks the performance of every supplier in your network:
+
+    - **Overall performance** — revenue contributed per vendor in the period
+    - **On-time delivery rate** — percentage of POs fulfilled on or before the agreed due date
+    - **Quality score** — derived from ticket data; products generating more Invalid Keys or Quality tickets pull a vendor's score down
+
+    Use this tab during vendor reviews to have data-backed conversations about delivery reliability and key quality, and to identify which vendors are creating the most support overhead.
+  </Tab>
+  <Tab title="Customers">
+    The Customers tab profiles the buyers generating your revenue:
+
+    - **Individual vs Business mix** — the proportion of orders placed by individual customers versus business accounts
+    - **Repeat rate** — the percentage of customers who have placed more than one order, indicating loyalty and LTV potential
+
+    Use this tab to understand whether your customer base skews toward one-time buyers or repeat purchasers, and to inform decisions around loyalty programmes or B2B-focused promotions.
+  </Tab>
+</Tabs>
+
+## Vendor analytics portal
+
+Vendors have access to their own analytics dashboard inside the vendor portal, accessible at the **Analytics** route within `/s/{token_id}/vendor-portal`. The vendor view shows:
+
+- **6-month trend lines** for their own revenue and order volume
+- **KPI cards** covering their performance metrics for the current period
+
+This gives vendors the data they need for monthly business reviews without exposing your full store performance or other vendors' data. Everything in the vendor analytics view is scoped exclusively to that vendor's products and orders.
+
+<Note>
+  The **Reports** sidebar entry (next to Analytics) is a **Coming Soon** placeholder. Scheduled report exports — such as weekly CSV revenue summaries — will be available there when launched. Watch the changelog for updates.
+</Note>

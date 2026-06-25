@@ -1,0 +1,135 @@
+---
+title: "Webhooks: Receive Real-Time Event Notifications"
+sidebarTitle: "Webhooks"
+description: "Push real-time event notifications from Tokensupply to your server. No polling needed — just register an endpoint and start receiving signed payloads."
+---
+
+Webhooks let you react to events on your Tokensupply account the moment they happen. Instead of repeatedly querying the API, you register an HTTPS endpoint and Tokensupply POSTs a signed JSON payload to it whenever a subscribed event fires. Events originate directly from the database, so changes made through the dashboard, the API, or marketplace syncs all trigger deliveries equally.
+
+## Register an endpoint
+
+Navigate to **Settings → Webhooks** and add a new endpoint. During setup you will:
+
+<Steps>
+  <Step title="Enter your endpoint URL">
+    Provide the public HTTPS URL on your server that will receive POST requests from Tokensupply.
+  </Step>
+  <Step title="Select events">
+    Choose one or more event types to subscribe to. See the [full event catalog](/api/webhook-events) for every available event.
+  </Step>
+  <Step title="Save and copy your signing secret">
+    Tokensupply generates a signing secret in the format `whsec_...`. Store it securely — you'll use it to verify incoming payloads.
+  </Step>
+</Steps>
+
+After saving, you can send a `ping` test event at any time using the **Send test** button on your endpoint's detail page.
+
+## Request format
+
+Every delivery is an HTTP `POST` to your endpoint URL. Tokensupply includes the following headers on every request:
+
+| Header | Value |
+|---|---|
+| `Content-Type` | `application/json` |
+| `User-Agent` | `TokenSupply-Webhooks/1` |
+| `X-TokenSupply-Event` | The event type, e.g. `order.completed` |
+| `X-TokenSupply-Delivery` | A unique delivery ID you can use for idempotency |
+| `X-TokenSupply-Signature` | `sha256=<hmac>` — see [Verifying signatures](#verifying-signatures) |
+
+The request body is a JSON object with a consistent top-level structure across all events:
+
+```json
+{
+  "id": "delivery-uuid",
+  "event": "order.completed",
+  "created": 1749312000,
+  "data": { ... event-specific payload ... }
+}
+```
+
+The `created` field is a Unix timestamp in seconds. The `id` field matches `X-TokenSupply-Delivery` and stays the same across retries — use it to deduplicate processing on your end.
+
+## Verifying signatures
+
+Every payload is signed with HMAC-SHA256 using your endpoint's signing secret. Always verify the signature before trusting or acting on a payload.
+
+Compute the HMAC over the **raw request body bytes** and compare the result (using constant-time comparison) to the hex digest in `X-TokenSupply-Signature` after stripping the `sha256=` prefix.
+
+<Warning>
+  Never verify against a parsed or re-serialised version of the body. JSON serialisers may reorder keys or change whitespace, which will cause the HMAC to differ from the original.
+</Warning>
+
+<CodeGroup>
+
+```js Node.js (Express)
+import crypto from "node:crypto";
+
+app.post("/webhooks/tokensupply", express.raw({ type: "application/json" }), (req, res) => {
+  const secret = process.env.TOKENSUPPLY_WEBHOOK_SECRET; // whsec_...
+  const signature = req.header("X-TokenSupply-Signature") || "";
+  const expected = "sha256=" + crypto.createHmac("sha256", secret).update(req.body).digest("hex");
+
+  const ok =
+    signature.length === expected.length &&
+    crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+
+  if (!ok) return res.status(401).send("invalid signature");
+
+  const event = JSON.parse(req.body.toString());
+  // handle event.event / event.data ...
+  res.sendStatus(200);
+});
+```
+
+```python Python (Flask)
+import hmac, hashlib
+from flask import request, abort
+
+def verify(secret: str):
+    raw = request.get_data()  # raw bytes
+    expected = "sha256=" + hmac.new(secret.encode(), raw, hashlib.sha256).hexdigest()
+    sig = request.headers.get("X-TokenSupply-Signature", "")
+    if not hmac.compare_digest(sig, expected):
+        abort(401)
+```
+
+</CodeGroup>
+
+## Retry behaviour
+
+Your endpoint must respond with a `2xx` status code within **10 seconds**. If it returns a non-`2xx` status or times out, Tokensupply retries the delivery with exponential backoff:
+
+| Attempt | Delay after previous failure |
+|---|---|
+| 1 | 1 minute |
+| 2 | 5 minutes |
+| 3 | 15 minutes |
+| 4 | 60 minutes |
+| 5 | 180 minutes |
+
+After 5 failed attempts the delivery is marked `failed` and no further retries are made. You can inspect every attempt and its response under **View deliveries** on each endpoint's detail page.
+
+<Tip>
+  If you need to replay a failed delivery, use the **View deliveries** panel to manually resend it after you've resolved the issue on your server.
+</Tip>
+
+## Best practices
+
+<CardGroup cols={2}>
+  <Card title="Respond fast" icon="bolt">
+    Return `2xx` immediately and process the event asynchronously. You have a 10-second window before Tokensupply times out the request and schedules a retry.
+  </Card>
+  <Card title="Deduplicate deliveries" icon="copy">
+    Retries reuse the same `X-TokenSupply-Delivery` ID. Store processed delivery IDs and skip any that you've already handled.
+  </Card>
+  <Card title="Verify every signature" icon="shield-check">
+    Always run the HMAC check against the raw body before acting on a payload. Reject any request that fails verification with a `401` response.
+  </Card>
+  <Card title="Subscribe narrowly" icon="filter">
+    Only enable the event types your integration actually consumes. Unnecessary subscriptions create noise and slow down your processing pipeline.
+  </Card>
+</CardGroup>
+
+## Next steps
+
+For the complete list of event types and their payload fields, see the [Webhook Events reference](/api/webhook-events).

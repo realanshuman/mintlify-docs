@@ -1,0 +1,178 @@
+---
+title: "Tickets API — Tokensupply"
+sidebarTitle: "Tickets"
+description: "List and retrieve support tickets raised against your Tokensupply store orders and products using the read:tickets scope."
+---
+
+The Tickets API gives you read access to support tickets associated with your store. Tickets are raised when a buyer or your team flags an issue with an order, a product, or a purchase order. Use them to monitor dispute status, track deadlines, and build custom support workflows on top of Tokensupply. Both endpoints require the `read:tickets` scope.
+
+---
+
+## List Tickets
+
+Retrieve a paginated list of all tickets for your store, sorted by `created_at` descending.
+
+```
+GET /tickets
+```
+
+**Required scope:** `read:tickets`
+
+### Query Parameters
+
+<ParamField query="limit" type="integer" default="50">
+  Maximum number of tickets to return. Cannot exceed `100`.
+</ParamField>
+
+<ParamField query="offset" type="integer" default="0">
+  Number of tickets to skip before returning results. Use with `limit` to paginate.
+</ParamField>
+
+### Example Request
+
+```bash
+curl "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/tickets?limit=50&offset=0" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+### Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": "tkt_01qrst",
+      "ticket_code": "TKT-20240601-001",
+      "title": "Key not working",
+      "description": "Customer reports the delivered key returns an invalid code error.",
+      "issue_type": "invalid_key",
+      "severity": "high",
+      "status": "open",
+      "order_id": "ord_01hxyz",
+      "product_id": "prd_01abcd",
+      "seller_id": "sel_01uvwx",
+      "purchase_order_id": "po_01mnop",
+      "deadline_days": 3,
+      "created_at": "2024-06-01T15:00:00Z",
+      "updated_at": "2024-06-01T15:00:00Z"
+    }
+  ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0,
+    "total": 7
+  }
+}
+```
+
+---
+
+## Retrieve a Ticket
+
+Fetch a single ticket by its ID.
+
+```
+GET /tickets/{id}
+```
+
+**Required scope:** `read:tickets`
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the ticket to retrieve.
+</ParamField>
+
+### Example Request
+
+```bash
+curl "https://iheiakmmrflybswwtknc.supabase.co/functions/v1/public-api/tickets/tkt_01qrst" \
+  -H "Authorization: Bearer ts_live_xxxxxxxxxxxx"
+```
+
+### Example Response
+
+```json
+{
+  "data": {
+    "id": "tkt_01qrst",
+    "ticket_code": "TKT-20240601-001",
+    "title": "Key not working",
+    "description": "Customer reports the delivered key returns an invalid code error.",
+    "issue_type": "invalid_key",
+    "severity": "high",
+    "status": "open",
+    "order_id": "ord_01hxyz",
+    "product_id": "prd_01abcd",
+    "seller_id": "sel_01uvwx",
+    "purchase_order_id": "po_01mnop",
+    "deadline_days": 3,
+    "created_at": "2024-06-01T15:00:00Z",
+    "updated_at": "2024-06-01T15:00:00Z"
+  }
+}
+```
+
+---
+
+## Response Fields
+
+<ResponseField name="id" type="string">
+  Unique identifier for the ticket, assigned by Tokensupply.
+</ResponseField>
+
+<ResponseField name="ticket_code" type="string">
+  Human-readable reference code for the ticket (e.g. `TKT-20240601-001`).
+</ResponseField>
+
+<ResponseField name="title" type="string">
+  Short summary of the issue.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Full description of the reported issue.
+</ResponseField>
+
+<ResponseField name="issue_type" type="string">
+  Category of the issue (e.g. `invalid_key`, `not_delivered`, `refund_request`).
+</ResponseField>
+
+<ResponseField name="severity" type="string">
+  Severity level of the ticket (e.g. `low`, `medium`, `high`, `critical`).
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Current status of the ticket (e.g. `open`, `in_progress`, `resolved`, `closed`).
+</ResponseField>
+
+<ResponseField name="order_id" type="string">
+  ID of the order the ticket is linked to, if applicable.
+</ResponseField>
+
+<ResponseField name="product_id" type="string">
+  ID of the product the ticket relates to, if applicable.
+</ResponseField>
+
+<ResponseField name="seller_id" type="string">
+  ID of the seller associated with the ticket.
+</ResponseField>
+
+<ResponseField name="purchase_order_id" type="string">
+  ID of the purchase order the ticket is linked to, if applicable.
+</ResponseField>
+
+<ResponseField name="deadline_days" type="integer">
+  Number of days within which the ticket must be resolved.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp of when the ticket was created.
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  ISO 8601 timestamp of the last update to the ticket.
+</ResponseField>
+
+<Info>
+  The Tickets API is read-only. To respond to or escalate a ticket, use the Tokensupply dashboard.
+</Info>

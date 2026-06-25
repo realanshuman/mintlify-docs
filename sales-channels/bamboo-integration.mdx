@@ -1,0 +1,63 @@
+---
+title: "Connect Bamboo Card to Tokensupply"
+sidebarTitle: "Bamboo Card"
+description: "Connect Bamboo Card as a distributor source in Tokensupply, browse the catalog, and convert items into purchase orders that flow straight into your inventory."
+---
+
+Bamboo Card is a **distributor source** in Tokensupply, not a sales channel — you procure digital goods stock from Bamboo rather than listing products on it. Once connected, you can browse Bamboo's catalog, convert any item into a purchase order against your Bamboo Card vendor record, and receive the delivered keys directly into your encrypted inventory vault, exactly like any other purchase order.
+
+<Note>
+  Because Bamboo Card is a procurement source, it does **not** appear under **Sales Channel** in the sidebar. You manage the Bamboo connection entirely from **Integrations → Bamboo Card**.
+</Note>
+
+## Connect your Bamboo Card account
+
+<Steps>
+  <Step title="Open the Bamboo Card connector">
+    In the Tokensupply sidebar, navigate to **Integrations → Bamboo Card**.
+  </Step>
+  <Step title="Enter your API credentials">
+    Provide the API credentials supplied by your Bamboo Card account manager. The exact credential fields are shown on the setup page — contact your Bamboo Card representative if you have not yet received them.
+  </Step>
+  <Step title="Share Tokensupply's egress IP for whitelisting">
+    Give Tokensupply's egress IP address to your Bamboo Card account manager and ask them to add it to the IP whitelist on Bamboo's side. All outbound requests to Bamboo's API originate from this stable IP.
+  </Step>
+  <Step title="Save and unlock the catalog">
+    Click **Save**. Once your IP has been whitelisted by Bamboo, the catalog browser on the integration page unlocks and you can begin browsing available products.
+  </Step>
+</Steps>
+
+<Warning>
+  The Bamboo catalog will not load until your IP has been whitelisted by Bamboo Card. Save your credentials first, then follow up with your Bamboo account manager to complete the whitelisting step. The catalog unlocks automatically once the whitelist is in place.
+</Warning>
+
+## Sourcing stock from Bamboo
+
+After the catalog unlocks, your sourcing workflow is straightforward:
+
+<Steps>
+  <Step title="Browse the catalog">
+    Open the Bamboo Card integration page and use the catalog browser to explore available products. You can search by product name or filter by category.
+  </Step>
+  <Step title="Convert to a purchase order">
+    Select any catalog item and convert it into a **Purchase Order** against your "Bamboo Card" vendor record in Tokensupply. Specify the quantity and confirm the order details.
+  </Step>
+  <Step title="Receive keys into inventory">
+    Delivered keys from the purchase order flow into your Tokensupply inventory automatically, the same way keys from any other vendor purchase order are received. They are stored encrypted in your key vault and become available for sale across your connected channels immediately.
+  </Step>
+</Steps>
+
+## Security and credentials
+
+<CardGroup cols={2}>
+  <Card title="Encrypted credential storage" icon="lock">
+    Your Bamboo Card API credentials are stored encrypted at rest and are never returned by the Tokensupply API or included in webhook payloads.
+  </Card>
+  <Card title="Stable egress IP" icon="shield-halved">
+    All requests to Bamboo's API originate from a single fixed IP, making IP whitelisting reliable and predictable — no dynamic IP surprises.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Once you have Bamboo Card set up as a vendor source, you can use Tokensupply's vendor management features — such as side-by-side offer comparisons — to benchmark Bamboo Card pricing against your other suppliers before committing to a purchase order.
+</Tip>

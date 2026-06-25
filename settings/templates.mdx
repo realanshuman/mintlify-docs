@@ -1,0 +1,77 @@
+---
+title: "Templates: Reusable Emails and Documents With Merge Fields"
+sidebarTitle: "Templates"
+description: "Create and manage reusable email and document templates with dynamic merge fields, file attachments, and a live-preview rich text editor."
+---
+
+Templates let you define the content of transactional emails and documents once and reuse them across orders, deliveries, and notifications. Instead of writing the same delivery confirmation or vendor communication from scratch each time, you build a template — including personalisation through merge fields — and TokenSupply substitutes the real values at send time. Manage all your templates from the **Templates** entry in the top-level sidebar.
+
+<Note>
+  **Templates** is a standalone sidebar item — it is not a tab inside **Settings**. Navigate to it directly from the sidebar.
+</Note>
+
+## Merge fields
+
+Merge fields are placeholders you embed in your template content. When TokenSupply sends the email or generates the document, it replaces each placeholder with the actual value for that specific order, customer, or delivery.
+
+| Merge field | Replaced with |
+|-------------|---------------|
+| `{{delivery_link}}` | The unique URL for the customer's delivery portal |
+| `{{customer_name}}` | The customer's full name or business name |
+| `{{order_id}}` | The formatted Order ID for the transaction |
+| `{{key}}` | The digital key or licence code being delivered |
+
+<Tip>
+  Use `{{customer_name}}` at the start of email body text (e.g. "Hi `{{customer_name}}`,") to personalise the message without any manual work per order.
+</Tip>
+
+## Attachments
+
+You can attach files to templates so they are automatically included whenever that template is sent. TokenSupply handles MIME types correctly, meaning PDFs, images, and plain text files all render properly in email inboxes — no broken attachments or missing inline images.
+
+Supported attachment types include:
+- **PDF** — ideal for invoices, licence agreements, or product guides
+- **Images** (PNG, JPG, SVG) — product artwork, QR codes, or branding assets
+- **Text files** — readme instructions or plain-text licence terms
+
+## The template editor
+
+<Tabs>
+  <Tab title="Rich Text">
+    The default editing mode gives you a WYSIWYG toolbar — bold, italic, headings, lists, links, and inline images. Write your template content as you'd like it to appear, embedding merge fields where needed by typing them directly (e.g. `{{delivery_link}}`).
+  </Tab>
+  <Tab title="Plain HTML">
+    Switch to HTML mode for full control over the markup. This is useful when you need precise layout, custom table structures, or styling that the rich text toolbar doesn't expose. Merge fields work identically in HTML mode.
+  </Tab>
+  <Tab title="Live Preview">
+    The preview pane renders your template as it will appear to the recipient. Switch to it at any time while editing to check formatting, image placement, and merge field positions before saving.
+  </Tab>
+</Tabs>
+
+## Creating a template
+
+<Steps>
+  <Step title="Navigate to Templates">
+    Click **Templates** in the sidebar to open the template management page.
+  </Step>
+  <Step title="Create a new template">
+    Click **New Template** and give it a descriptive name (e.g. "Standard Delivery Email" or "Vendor Dispute Notice").
+  </Step>
+  <Step title="Write your content">
+    Use the rich text editor or switch to HTML mode. Insert merge fields by typing them in the format `{{field_name}}` wherever you need dynamic content.
+  </Step>
+  <Step title="Add attachments (optional)">
+    Upload any files you want included with this template. They will attach automatically every time the template is sent.
+  </Step>
+  <Step title="Preview and save">
+    Switch to the **Live Preview** tab to review the rendered output, then click **Save** to store the template.
+  </Step>
+</Steps>
+
+## Using templates
+
+Saved templates are available for selection wherever emails are sent in TokenSupply — including order deliveries, ticket communications, and bulk notifications. Select the template from the dropdown, review the pre-filled content, and send. Merge fields are resolved at the moment of sending using data from the linked order, customer, or delivery.
+
+<Info>
+  Updating a saved template does not retroactively change emails that have already been sent. Changes only apply to sends that happen after you save the updated version.
+</Info>

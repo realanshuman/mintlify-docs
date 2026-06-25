@@ -1,0 +1,82 @@
+---
+title: "Team Management: Roles, Invites, and Activity Logs"
+sidebarTitle: "Team"
+description: "Invite staff members, assign Admin or Support roles, review pending invites, and audit team activity — all from the Team page."
+---
+
+The **Team** page is where Super Admins and Admins manage the people who access your TokenSupply store. From here you can invite new team members, review who is on your team and what role they hold, inspect pending invitations, and audit every administrative action through the activity log. Vendor access is managed separately through vendor detail pages — not through this page.
+
+## Team page tabs
+
+The Team page is divided into four tabs:
+
+<CardGroup cols={2}>
+  <Card title="Members" icon="users">
+    A list of all active staff accounts with their assigned roles. Use this tab to see who has access and to manage or revoke existing memberships.
+  </Card>
+  <Card title="Vendors" icon="handshake">
+    A list of vendor accounts linked to your store. Vendors sign in through a separate portal and have a constrained permission scope.
+  </Card>
+  <Card title="Invites" icon="envelope" >
+    View all pending invitations that have been sent but not yet accepted. **Admin and Super Admin only.**
+  </Card>
+  <Card title="Activity" icon="list-check">
+    A full audit log of administrative events — role changes, invites sent, and member removals — captured automatically by database triggers. **Admin and Super Admin only.**
+  </Card>
+</CardGroup>
+
+## Inviting a team member
+
+<Steps>
+  <Step title="Click Invite Member">
+    On the **Members** tab, click the **Invite Member** button in the top-right corner.
+  </Step>
+  <Step title="Enter the email address">
+    Type the email address of the person you want to invite. They will receive an email with a link to set up their account.
+  </Step>
+  <Step title="Select a role">
+    Choose either **Admin** or **Support** for the new member. See the permissions table below to understand what each role can access.
+  </Step>
+  <Step title="Send the invitation">
+    Click **Send Invite**. The invitation appears in the **Invites** tab until the recipient accepts it.
+  </Step>
+</Steps>
+
+<Warning>
+  Only **Super Admins** and **Admins** can send team invitations. Support team members do not have access to the Invites tab or the Invite Member action.
+</Warning>
+
+## Role permissions
+
+| Permission | Super Admin | Admin | Support | Vendor |
+|------------|:-----------:|:-----:|:-------:|:------:|
+| **Sign-in location** | Main platform | Main platform | Main platform | `/s/{token_id}/vendor-portal` |
+| **Team management** | ✅ | ✅ | ❌ | ❌ |
+| **Products** | ✅ | ✅ | ✅ | Own offers + store catalog |
+| **Analytics** | ✅ | ✅ | ❌ | Own data only |
+| **Billing & Plans** | ✅ | ✅ | ❌ | ❌ |
+
+<Info>
+  The **Vendor** role is distinct from all staff roles. Vendors sign in through a dedicated portal URL unique to your store (`/s/{token_id}/vendor-portal`) and cannot access the main platform admin.
+</Info>
+
+## Inviting vendors
+
+<Note>
+  Vendor invites are **not sent from the Team page**. To invite a vendor to your portal, open the vendor's detail page and use the **Invite to Portal** action there. This creates a `vendor_memberships` record rather than a staff account, and generates a vendor-specific setup link. See the [Vendor Portal](/vendors/vendor-portal) guide for the complete flow.
+</Note>
+
+## Activity log
+
+The **Activity** tab records every administrative event on your team — including:
+
+- Role assignments and changes
+- Invitations sent
+- Member removals
+- Vendor joins and staff joins (logged as distinct event types)
+
+These events are captured automatically by database triggers, creating a full audit trail without any manual logging required. Use the activity log to investigate access changes or to review the history of a specific team member's role.
+
+<Tip>
+  The activity log is read-only — entries cannot be deleted or modified. This ensures the audit trail remains trustworthy for compliance and dispute resolution.
+</Tip>

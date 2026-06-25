@@ -1,0 +1,110 @@
+---
+title: "Inventory Management: Keys, Statuses & Audit Trail"
+sidebarTitle: "Inventory"
+description: "Add keys individually or in bulk, prevent duplicates, reveal masked keys with a full audit trail, and manage replacements and status changes."
+---
+
+Inventory in Tokensupply is the pool of keys, accounts, or gift card codes ready to be delivered to buyers. Every inventory item is tied to a product, carries a status, and has a complete activity log attached to it. This guide covers every way to add stock, how Tokensupply prevents duplicate keys, how the masked key and reveal system works, and how to handle replacements.
+
+## Adding inventory
+
+Navigate to a product's **Inventory** tab to add stock. Tokensupply gives you three ways to add keys depending on how much stock you're adding and where it's coming from.
+
+<Tabs>
+  <Tab title="Single key">
+    Use the inline entry form to add one key at a time. Fill in:
+
+    - **Key value** — the redeemable code or credential.
+    - **Expiry date** (optional) — set this for time-limited codes such as gift cards with an expiry.
+    - **Notes** (optional) — any internal notes about this specific key (e.g. batch reference or supplier note).
+
+    Click **Add Key** to save. The key is immediately available for delivery if the product is enabled on a sales channel.
+  </Tab>
+  <Tab title="Bulk upload (CSV)">
+    To upload many keys at once, use the **Bulk Upload** option on the Inventory tab. You can either paste keys directly into the text area (one key per row) or upload a CSV file in the same format.
+
+    Before submission, the bulk-entry UI scans your input in real time and flags any duplicates — both against keys already in your inventory and within the batch itself. Review and remove any flagged entries before finalising the upload.
+
+    ```csv
+    XXXX-YYYY-ZZZZ-AAAA
+    BBBB-CCCC-DDDD-EEEE
+    FFFF-GGGG-HHHH-IIII
+    ```
+
+    <Tip>
+      For large batches, upload a CSV file rather than pasting to avoid browser performance issues. One key per row, no headers required.
+    </Tip>
+  </Tab>
+  <Tab title="From a Purchase Order">
+    When a vendor uploads a stock file against an approved Purchase Order, that file flows directly into inventory once you approve it. Navigate to the relevant Purchase Order under **Purchases**, review the stock file, and click **Approve** to push the keys into the product's inventory in one step.
+
+    This workflow keeps your sourcing and inventory records linked — every key added via a PO retains a reference back to the originating order.
+  </Tab>
+</Tabs>
+
+## Duplicate prevention
+
+Tokensupply enforces a unique constraint on the `ref_id` of every inventory item at the database level. This means it is impossible to add the same key twice — even if you try to upload it through different methods or at different times.
+
+On top of the database constraint, the bulk-upload UI detects duplicates in real time as you type or paste, before you even submit the form. Duplicate entries are highlighted inline so you can remove them immediately.
+
+<Warning>
+  The duplicate check applies across your entire store — not just within a single product. If a key already exists on any product in your inventory, re-adding it will be blocked.
+</Warning>
+
+## Masked keys and the Reveal modal
+
+All keys are masked by default in the inventory list — displayed as a series of dots rather than the full value. This protects key values from casual exposure in shared screens, recordings, or over-the-shoulder viewing.
+
+To view a key:
+
+1. Find the inventory item in the **Inventory** tab.
+2. Click the **Reveal** button on that row.
+3. The **Key Reveal Modal** opens and displays the full key value briefly.
+
+<Info>
+  There is no inline copy-to-clipboard button. Every reveal requires you to open the modal, which logs the action automatically. This design ensures that every time a key value is accessed, there is a record of who accessed it and when.
+</Info>
+
+Every reveal is logged in the item's **Activity** record with the actor's name, their role, and the exact timestamp. This gives you a complete audit trail for every key in your inventory — useful for resolving disputes or investigating unauthorised access.
+
+## Inventory statuses
+
+Each inventory item carries one of four statuses that reflect where it is in the delivery lifecycle.
+
+| Status | Meaning |
+|---|---|
+| **Available** | The key is in stock and ready to be reserved for an order or delivered to a buyer |
+| **Reserved** | The key has been allocated to a pending order and is held — it cannot be assigned to another order until released or delivered |
+| **Sold** | The key has been delivered to a customer and is no longer available |
+| **Invalid** | The key has been marked as non-functional — for example, it was reported as already redeemed, expired, or defective |
+
+<Note>
+  Only **Available** keys count toward the **Active Inventory** KPI card on your dashboard. Reserved, Sold, and Invalid keys are tracked but do not contribute to your sellable stock count.
+</Note>
+
+## Replacing keys
+
+If a key is **Sold** or **Invalid** — for instance, a customer reports it doesn't work — you can swap in a replacement without losing the history of the original.
+
+1. Open the inventory item (via the **Inventory** tab or through a linked ticket).
+2. Click **Replace Key**.
+3. Enter the replacement key value.
+4. Confirm the replacement.
+
+The original key record is preserved with its full history intact. The replacement key is linked to the same inventory item, so the entire replacement chain is visible in one place. This is particularly useful when resolving tickets, as support agents can see exactly what was originally delivered and what was sent as a replacement.
+
+## Activity log
+
+Every action taken on an inventory item is recorded in its **Activity** log. Open the **Activity** dialog from any inventory item to see a timestamped, actor-attributed record of:
+
+- **Add** — when the key was added and by whom (or via which method: manual, bulk upload, or PO).
+- **Reveal** — every time the key value was revealed, with the actor's name and role.
+- **Copy** — if the key value was copied from the reveal modal.
+- **Sell** — when the key was delivered, linked to the corresponding order ID.
+- **Replace** — when a replacement key was issued, with the replacement key reference.
+- **Link to ticket** — when the item was associated with a support ticket for investigation or resolution.
+
+<Tip>
+  Use the activity log during ticket resolution to quickly confirm whether a key was ever revealed before it was sold — this can help determine if a "key not working" report is a supplier defect or a prior-exposure issue.
+</Tip>

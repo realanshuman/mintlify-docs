@@ -1,0 +1,100 @@
+---
+title: "Creating Your Store on Tokensupply"
+sidebarTitle: "Create Store"
+description: "Sign up, configure your business details, customise your storefront URL, and invite your team — all in under ten minutes."
+---
+
+Tokensupply is the all-in-one operating system for digital goods sellers. Before you can list products, manage inventory, or connect sales channels, you need a store. This guide walks you through every step — from your first sign-up to having a fully configured workspace ready for your team.
+
+## Sign up and create your store
+
+<Steps>
+
+  <Step title="Create your account">
+    Go to [tokensupply.in](https://tokensupply.in) and sign up with your email address. After submitting the registration form, check your inbox for a verification email and click the confirmation link.
+
+    Once your email is verified, Tokensupply takes you directly to the **Create Store** screen.
+  </Step>
+
+  <Step title="Name your store and choose your region">
+    Fill in three fields to initialise your store:
+
+    - **Store Name** — the public-facing name customers and integrations will see.
+    - **Country** — used for tax defaults, address formatting, and compliance fields.
+    - **Default Currency** — the store currency shown on invoices, PDFs, and the dashboard KPI cards.
+
+    Click **Create Store** to continue. The account that creates the store is automatically assigned the **Super Admin** role.
+  </Step>
+
+  <Step title="Configure your business details">
+    Open **Settings → General** to complete your business profile. These fields appear on customer invoices, purchase orders, and outbound emails, so fill them in accurately before you start selling.
+
+    | Field | Purpose |
+    |---|---|
+    | **Store Name** | Your public brand displayed to customers |
+    | **Company Name** | Legal entity name shown on invoices and POs |
+    | **Legal Name** | Full registered business name for compliance |
+    | **Support Email** | Reply-to address on all customer-facing emails |
+    | **Address** | Business address printed on invoices and PDFs |
+    | **GST / PAN** | Tax identification numbers for applicable regions |
+    | **Default Currency** | Store-wide currency (changeable here after setup) |
+    | **Logo** | Appears in the topbar, customer portal, emails, and PDFs |
+
+    Your branding — logo and brand colours — and the **Order ID Format** are all configured on this same **General** tab, so complete everything in one pass.
+
+    <Tip>
+      Upload your logo as a square PNG or SVG with a transparent background for the cleanest result across all surfaces (topbar, emails, and PDFs).
+    </Tip>
+  </Step>
+
+  <Step title="Customise your storefront URL">
+    Open **Settings → Store Page** to edit your storefront slug, which Tokensupply calls the `token_id`. Your public store URL is:
+
+    ```
+    tokensupply.in/s/{token_id}
+    ```
+
+    Choose a slug that matches your brand — for example, `tokensupply.in/s/acmegames`. You can also toggle whether the public store page is visible to anonymous visitors from this same screen.
+
+    <Note>
+      If you are on the Growth plan, you can point a custom domain to your store instead of using the default `tokensupply.in/s/{token_id}` URL. Configure that under **Settings → Custom Domain** once your store is live.
+    </Note>
+  </Step>
+
+  <Step title="Invite your team">
+    Navigate to **Team → Invite Member** and enter your team member's email address. Select the appropriate role for each person before sending the invitation.
+
+    | Role | Best for |
+    |---|---|
+    | **Super Admin** | Store owner — full access including billing and plan management |
+    | **Admin** | Operations leads — manages team, billing, integrations, and settings |
+    | **Support** | Day-to-day work — handles tickets, inventory, and customer messages |
+    | **Vendor** | External suppliers — limited to their own purchase orders and offers |
+
+    Each role unlocks a tailored sidebar and a scoped permission set, so team members only see what they need.
+
+    <Warning>
+      Only Super Admins and Admins can access **Billing & Plans**. Make sure you assign this role to anyone who needs to manage your subscription or credits.
+    </Warning>
+  </Step>
+
+</Steps>
+
+## What's next
+
+With your store created and team invited, you're ready to start building your catalogue and connecting sales channels.
+
+<CardGroup cols={2}>
+  <Card title="Take the Dashboard Tour" icon="gauge" href="/getting-started/dashboard-tour">
+    Learn what every KPI card, quick action, and sidebar section does.
+  </Card>
+  <Card title="Add Your First Product" icon="plus" href="/products/adding-products">
+    Create a product listing with SKU, category, and delivery settings.
+  </Card>
+  <Card title="Manage Inventory" icon="warehouse" href="/products/inventory-management">
+    Upload keys, prevent duplicates, and track every reveal.
+  </Card>
+  <Card title="Billing & Credits" icon="credit-card" href="/getting-started/billing-credits">
+    Understand how credits work and choose the right plan.
+  </Card>
+</CardGroup>

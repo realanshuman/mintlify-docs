@@ -1,0 +1,81 @@
+---
+title: "SMTP Email Setup: Send From Your Own Mail Server"
+sidebarTitle: "Email Setup"
+description: "Configure SMTP credentials so TokenSupply sends all transactional emails from your own domain — with Resend as an automatic fallback."
+---
+
+By default, TokenSupply sends transactional emails through Resend. Connecting your own SMTP server lets you send deliveries, notifications, and vendor invites from a domain you control — giving recipients a consistent, branded sender address and keeping your emails out of spam. If your SMTP connection ever fails, TokenSupply automatically falls back to Resend so critical emails are never blocked.
+
+## Configuring SMTP
+
+<Steps>
+  <Step title="Open Email Setup">
+    In the sidebar, click **Settings**, then select the **Email Setup** tab.
+  </Step>
+  <Step title="Enter your server details">
+    Fill in the following fields:
+
+    | Field | What to enter |
+    |-------|---------------|
+    | **Host** | Your SMTP server address (e.g. `smtp.gmail.com`, `smtp.sendgrid.net`) |
+    | **Port** | Typically `587` for TLS or `465` for SSL |
+    | **Username** | Your SMTP account username (often your full email address) |
+    | **Password** | Your SMTP password or app-specific password |
+    | **From Email** | The address your emails will appear to come from |
+    | **From Name** | The display name customers and vendors will see |
+    | **Encryption** | Choose **TLS**, **SSL**, or **None** |
+  </Step>
+  <Step title="Choose your encryption">
+    Select **TLS** unless your provider specifically requires SSL or no encryption. TLS on port 587 is the most reliable and secure default.
+  </Step>
+  <Step title="Send a test email">
+    Click **Send Test Email**. TokenSupply sends a test message to your registered account email. Check your inbox — and your spam folder — to confirm delivery and inspect the sender address.
+  </Step>
+  <Step title="Save your settings">
+    Once the test succeeds, click **Save**. All subsequent transactional emails will route through your SMTP server.
+  </Step>
+</Steps>
+
+## Encryption options
+
+<Tabs>
+  <Tab title="TLS (Recommended)">
+    Use TLS on port **587**. This is the most widely supported and secure option and works with virtually all modern SMTP providers including Gmail, Outlook, and SendGrid.
+  </Tab>
+  <Tab title="SSL">
+    Use SSL on port **465** if your provider specifically requires it. Older than TLS but still secure — check your provider's documentation to confirm.
+  </Tab>
+  <Tab title="None">
+    Only use **None** in local development or testing environments. Sending production emails without encryption exposes credentials and message content in transit.
+  </Tab>
+</Tabs>
+
+## Resend fallback
+
+<Info>
+  If your SMTP server is unreachable or returns an error, TokenSupply automatically routes critical transactional emails — including vendor invites, order deliveries, and system notifications — through Resend. This ensures customers and vendors are never blocked by a temporary mail server issue. The fallback is silent; no manual intervention is required.
+</Info>
+
+## Provider-specific tips
+
+<Accordion title="Gmail and Google Workspace">
+  Google requires an **app-specific password** when 2-Step Verification is enabled on your account — your regular Google password will not work. Generate one at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) and use it in the **Password** field. Use `smtp.gmail.com` as the host and port `587` with TLS.
+</Accordion>
+
+<Accordion title="Outlook / Microsoft 365">
+  Use `smtp.office365.com` as the host, port `587`, and TLS. You may need to enable SMTP AUTH for the sending mailbox in the Microsoft 365 admin centre — it is disabled by default on some tenants.
+</Accordion>
+
+<Accordion title="SendGrid">
+  Use `smtp.sendgrid.net`, port `587`, TLS. Your username is the literal string `apikey` and your password is your SendGrid API key with the **Mail Send** permission enabled.
+</Accordion>
+
+## Best practices
+
+<Tip>
+  Always click **Send Test Email** after changing any SMTP credential — even a minor update like a password rotation. A successful test confirms the entire send path is working before a real transactional email needs to go out.
+</Tip>
+
+- Use a dedicated sending address (e.g. `orders@yourdomain.com`) rather than a personal inbox to keep transactional mail cleanly separated.
+- Rotate app-specific passwords if you suspect a credential has been compromised — update the Password field and re-test immediately.
+- If emails are landing in spam, check that your domain has SPF, DKIM, and DMARC records configured at your DNS provider.

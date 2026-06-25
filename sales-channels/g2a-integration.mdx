@@ -1,0 +1,98 @@
+---
+title: "Connect G2A to Tokensupply"
+sidebarTitle: "G2A"
+description: "Connect G2A to Tokensupply, map products to offers, enable auto-delivery, and manage pricing, stock, and sync settings from one dashboard."
+---
+
+The G2A integration connects your Tokensupply inventory directly to one of the world's largest digital goods marketplaces. Once connected, you can map your products to G2A offers, set prices and declared stock levels, and let Tokensupply handle key reservation and delivery automatically when buyers check out on G2A.
+
+## Connect your G2A account
+
+<Steps>
+  <Step title="Open the G2A connector">
+    In the Tokensupply sidebar, navigate to **Integrations → G2A**.
+  </Step>
+  <Step title="Enter your API credentials">
+    Fill in the four credential fields that G2A provides:
+    - **Client ID** — your G2A OAuth client identifier
+    - **Client Secret** — your G2A OAuth client secret
+    - **API URL** — the G2A REST API base URL for your account
+    - **Token URL** — the OAuth token endpoint used to authenticate requests
+  </Step>
+  <Step title="Save and accept contract terms">
+    Click **Save**. Tokensupply validates the credentials and prompts you to accept the G2A contract terms. You must accept these terms before listings become active.
+  </Step>
+</Steps>
+
+<Note>
+  Log in to your G2A seller account and go to the API or Developer section to retrieve your Client ID, Client Secret, API URL, and Token URL. The exact location may vary — check the **Integrations → G2A** page in your Tokensupply dashboard for the latest field descriptions.
+</Note>
+
+## Search and map G2A products
+
+After connecting, use the **Search G2A Products** tool on the integration page — or access it directly from a product's offer picker — to find the G2A catalog item that matches your internal product.
+
+The search modal works as follows:
+
+<CardGroup cols={2}>
+  <Card title="Initial load" icon="list">
+    Opens with the first **50 results per page** with full pagination so you can browse without typing.
+  </Card>
+  <Card title="Live API search" icon="magnifying-glass">
+    The moment you start typing, search switches to live API mode — every keystroke fetches matching results directly from G2A's full catalog, not a cached subset.
+  </Card>
+  <Card title="In-memory caching" icon="bolt">
+    Recent search results are cached in-memory, so repeating a search you've already run returns instantly without an extra API call.
+  </Card>
+  <Card title="Fetch status indicator" icon="circle-info">
+    The modal displays a live status label — **Searching…**, **Cached**, or **Error** — so you always know what's happening in the background.
+  </Card>
+</CardGroup>
+
+## Manage listings
+
+From the G2A integration detail page you can configure each mapped listing individually:
+
+- Set **retail** and **business** prices independently
+- Declare a **stock level** to advertise on the G2A marketplace
+- Set an estimated **delivery time** shown to buyers
+- Toggle **Active** to enable or suspend a listing
+- Toggle **Auto Deliver** to enable automatic key fulfilment on paid orders
+- View **competing dropshipping offers** from other G2A sellers to benchmark your pricing
+
+You can also manage all G2A listings in bulk from **Sales Channel → G2A**.
+
+## Auto Sync
+
+Enable **Auto Sync** on the integration page and choose a sync interval. Tokensupply schedules recurring syncs automatically using `pg_cron` — there are no manual sync buttons. Scheduled syncs are deterministic, meaning they run at a predictable cadence without race conditions or missed triggers.
+
+<Tip>
+  Set your sync interval based on how frequently your inventory levels change. For high-velocity products, choose a shorter interval to keep declared stock accurate and avoid over-selling.
+</Tip>
+
+## Auto-delivery and the checkout contract
+
+Tokensupply implements G2A's **Import API** (the `g2a-contract` edge function) to power auto-delivery. When a buyer checks out on G2A, the following happens automatically:
+
+<Steps>
+  <Step title="Reservation created">
+    G2A calls `POST /reservation`. Tokensupply reserves a key from your inventory and returns only the `reservation_id` and `stock` array — exactly the fields G2A's checkout expects, with no extra fields that could cause the cart to be rejected.
+  </Step>
+  <Step title="Reservation extended (if needed)">
+    If the buyer takes longer to complete checkout, G2A calls `PUT /reservation/{id}` to extend the hold. Tokensupply updates the reservation accordingly.
+  </Step>
+  <Step title="Reservation released on abandonment">
+    If the buyer abandons the cart, G2A calls `DELETE /reservation/{id}`. Tokensupply releases the reserved key back to available inventory.
+  </Step>
+  <Step title="Key delivered on purchase">
+    When the order is confirmed and paid, Tokensupply delivers the reserved key directly on the G2A channel.
+  </Step>
+</Steps>
+
+<Warning>
+  If a buyer sees a "cart updated / out of stock" message during G2A checkout, it typically means the reservation endpoint returned an unexpected response field. Tokensupply's strict-contract implementation prevents this — if you see this error, verify that your integration is using the latest version of the G2A connector and that no custom middleware is altering responses.
+</Warning>
+
+## Rate limits
+
+G2A enforces request rate limits. Bursts that exceed the quota return an **ERR429** response. Tokensupply tunes its sync intervals to stay within G2A's published quotas. If you configure a very short sync interval, monitor for ERR429 errors in the integration activity log and adjust as needed.

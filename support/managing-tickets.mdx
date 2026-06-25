@@ -1,0 +1,104 @@
+---
+title: "Managing Tickets: Lifecycle, Resolution, and AI Triage"
+sidebarTitle: "Tickets"
+description: "Create and manage support tickets for customer and vendor disputes, track SLA deadlines, issue replacements or refunds, and use AI-assisted summaries."
+---
+
+The Tickets module is your central hub for resolving customer disputes and managing vendor quality issues. Every ticket moves through a defined five-stage lifecycle, carries an SLA deadline, and maintains a full audit timeline — so nothing gets lost and handovers between team members are clean. Replacements and refunds are handled directly through the ticket, and long threads can be summarised by AI to accelerate resolution.
+
+## Creating a ticket
+
+<Steps>
+  <Step title="Navigate to Tickets">
+    Click **Tickets** in the sidebar, then click **Create Ticket**.
+  </Step>
+  <Step title="Set the ticket details">
+    Fill in the required fields:
+
+    | Field | Description |
+    |-------|-------------|
+    | **Title** | A short, clear description of the issue |
+    | **Description** | Full details of the problem, including any steps to reproduce or customer-supplied context |
+    | **Issue Type** | Select the category that best fits: Quality, Delivery, Payment, Invalid Keys, Expired Keys, or similar |
+    | **Severity** | Choose Low, Medium, High, or Critical based on impact |
+  </Step>
+  <Step title="Link related entities">
+    Connect the ticket to the relevant **Product**, **Vendor**, **Order**, or **Purchase Order**. Linking entities lets you search and attach specific inventory keys to the case.
+  </Step>
+  <Step title="Submit the ticket">
+    Click **Create** to open the ticket and begin the lifecycle.
+  </Step>
+</Steps>
+
+## Ticket lifecycle
+
+Every ticket moves through five stages, displayed on the ticket's timeline:
+
+<Steps>
+  <Step title="Open">
+    The ticket has been created and is waiting to be picked up by a team member.
+  </Step>
+  <Step title="In Progress">
+    A team member is actively working on the ticket — investigation is underway or communication is ongoing.
+  </Step>
+  <Step title="Awaiting Vendor / Customer">
+    The ball is in another party's court. The ticket is paused pending a response from either the vendor (for quality or supply issues) or the customer (for additional information).
+  </Step>
+  <Step title="Resolved">
+    The issue has been addressed — a replacement has been issued, a refund has been processed, or the dispute has been settled. The resolution type is shown as a badge on the timeline.
+  </Step>
+  <Step title="Closed">
+    The ticket is fully closed and archived. No further actions are expected or pending.
+  </Step>
+</Steps>
+
+## SLA tracking
+
+Each ticket has an SLA deadline calculated from its severity and creation time. A colour-coded progress bar visualises how much time remains:
+
+| Colour | Meaning |
+|--------|---------|
+| 🟢 Green | Plenty of time remaining — ticket is on track |
+| 🟡 Amber | Approaching the SLA deadline — prioritise this ticket |
+| 🔴 Red | SLA breached or imminent — immediate action required |
+
+## Resolution types
+
+When a ticket is ready to close, you can issue one of two resolution types directly from the ticket:
+
+<CardGroup cols={2}>
+  <Card title="Replacement" icon="arrows-rotate">
+    Issue a new key to the customer through the in-place replacement workflow. The replaced key is linked on the ticket timeline and the new key is delivered automatically.
+  </Card>
+  <Card title="Refund" icon="rotate-left">
+    Refund the original order. Delivery portal links are automatically revoked and, depending on the product configuration, the original keys may be returned to your inventory.
+  </Card>
+</CardGroup>
+
+## Linking inventory keys
+
+You can search your inventory directly from a ticket and attach specific keys to the case:
+
+- Search by key value or reference number
+- Link or unlink keys as the investigation develops
+- Every link, unlink, and key reveal is logged in the ticket timeline with a timestamp and the acting user's name — maintaining a clean chain of custody for dispute resolution.
+
+## Internal notes and attachments
+
+Add internal notes to any ticket — they are visible to your team but not to the customer or vendor. Each note shows the author's name and role badge (Admin, Support, etc.), making it easy to track who said what. Attach screenshots, documents, or exported logs to support vendor disputes or provide audit evidence.
+
+<Note>
+  Internal notes are distinct from reply messages that go to the customer. Check carefully which input field you are using before sending — replies are external and cannot be unsent.
+</Note>
+
+## AI-assisted triage
+
+For long or complex ticket threads, use the built-in **AI summarisation** to get a concise overview instantly:
+
+- The AI reads the full conversation thread and generates a plain-language summary of the issue and key events.
+- It extracts the core problem (e.g. invalid key, delayed delivery) and surfaces any relevant inventory items linked to the ticket.
+- Summaries make handovers between team members faster and reduce the time spent reading through lengthy exchanges.
+
+<Tip>
+  Use AI summarisation before escalating a ticket or handing it to a senior team member. Paste the summary into your internal note so the context is preserved even if the feature is not used by the next person who picks up the ticket.
+</Tip>

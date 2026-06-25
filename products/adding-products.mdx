@@ -1,0 +1,117 @@
+---
+title: "Adding and Managing Products in Tokensupply"
+sidebarTitle: "Add Products"
+description: "Create product listings with SKU, category, and delivery settings, then manage statuses and explore the full product detail page."
+---
+
+Products are the foundation of your Tokensupply catalogue. Each product represents a sellable digital item — a game key, software licence, gift card, or subscription — and acts as the container for all associated inventory, pricing, and sales channel configuration. This guide covers how to create a product from scratch, understand product statuses, and navigate the detail page tabs.
+
+## Creating a product
+
+<Steps>
+
+  <Step title="Open the Add Product form">
+    In the sidebar, click **Products**, then click **Add Product** in the top-right corner. The form opens in a centred, step-by-step layout that walks you through each field in order.
+  </Step>
+
+  <Step title="Enter the core product details">
+    Fill in the following fields:
+
+    <ParamField body="Product Name" type="string" required>
+      The display name of your product. This appears in the product list, on sales channels, and in customer-facing emails. For example: `Steam Wallet €50` or `Spotify Premium 12 Months`.
+    </ParamField>
+
+    <ParamField body="SKU" type="string" required>
+      Your internal stock-keeping unit identifier. Use a consistent format across your catalogue — for example, `STEAM-EU-50` or `SPOTIFY-12M-IN`.
+    </ParamField>
+
+    <ParamField body="Brand" type="string">
+      The brand or publisher associated with the product (for example, `Valve`, `Spotify`, or `Microsoft`). Used for filtering and reporting within your catalogue.
+    </ParamField>
+  </Step>
+
+  <Step title="Choose a functional category">
+    Select the **Functional Category** that best describes what the product does. Tokensupply uses a strict catalogue to keep your inventory consistent and filterable:
+
+    - Game
+    - Software
+    - Gift Card
+    - Subscription
+    - Other digital goods categories as listed in the form
+
+    <Note>
+      The functional category you choose affects how Tokensupply displays and filters the product across the platform. Pick the most specific category that fits the product.
+    </Note>
+  </Step>
+
+  <Step title="Set the product type">
+    Choose the **Product Type** that matches how the product is delivered to the customer:
+
+    | Product Type | When to use it |
+    |---|---|
+    | **Key** | A redeemable alphanumeric code the customer enters on a platform (e.g. a Steam key or Windows licence key) |
+    | **Account** | Login credentials for a pre-loaded account (e.g. a streaming account) |
+    | **Gift Card** | A gift card code with a monetary or point value tied to a specific platform or retailer |
+  </Step>
+
+  <Step title="Configure the listing">
+    Under **Listing Configuration**, set the **Delivery Time** — the expectation you communicate to customers at the point of purchase:
+
+    | Option | What it means |
+    |---|---|
+    | **Instant** | The key is delivered automatically the moment payment is confirmed |
+    | **Within 1 hour** | Delivery is completed within 60 minutes of the order being placed |
+    | **Within 24 hours** | Delivery is completed within one business day |
+
+    <Tip>
+      Set the delivery time to **Instant** only if you have sufficient inventory in **Available** status and auto-delivery is active for that sales channel. If stock runs out, orders will queue.
+    </Tip>
+  </Step>
+
+  <Step title="Save the product">
+    Click **Save** to create the product. It is created with an initial status of **Disabled** so you can add inventory and configure sales channels before making it live.
+  </Step>
+
+</Steps>
+
+## Product statuses
+
+Every product in Tokensupply carries one of three statuses, which control its visibility and sellability across all connected channels.
+
+| Status | What it means |
+|---|---|
+| **Enabled** | The product is live and available for sale on all configured sales channels |
+| **Disabled** | The product is temporarily hidden — it won't appear on sales channels or accept new orders, but all data is preserved |
+| **Discontinued** | The product is permanently archived — use this for items you no longer sell to keep your active catalogue clean |
+
+Change a product's status from the three-dot menu in the product list view, or from the **Overview** tab on the product detail page.
+
+## Product detail page
+
+Click any product in the list to open its detail page. The page uses a standard layout: an icon-only breadcrumb at the top, a profile header with the product name and current status, a quick stats strip, and a row of underline tabs.
+
+<Tabs>
+  <Tab title="Overview">
+    Displays core product information — name, SKU, brand, category, product type, delivery configuration, and current status. Edit any field directly from this tab. You can also change the product status here.
+  </Tab>
+  <Tab title="Inventory">
+    Shows all inventory items (keys) linked to this product, each with its current status and a masked key value. Add individual keys inline, bulk-upload via CSV, or pull in stock from a purchase order. See [Inventory Management](/products/inventory-management) for the full workflow.
+  </Tab>
+  <Tab title="Sales Channels">
+    Configure which channels this product is listed on, set channel-specific pricing, and view sync status for each connected integration. Enabling a channel here makes the product live on that platform once inventory is available.
+  </Tab>
+  <Tab title="Vendor Offers">
+    View and compare offers from your connected vendors for this product. The list shows each vendor's current offer price so you can quickly identify the most cost-effective sourcing option.
+  </Tab>
+  <Tab title="Activity">
+    A full audit log of every action taken on this product — status changes, inventory additions, channel toggles, and price updates — with the actor's name and a timestamp for each event.
+  </Tab>
+</Tabs>
+
+## Product list view
+
+The **Products** list uses a high-density card layout. Each row shows the product name, SKU, category, status, and a **Lowest Price** indicator pulled from the active vendor offers.
+
+<Info>
+  The **Lowest Price** highlight lets you spot pricing outliers across your vendor offers at a glance — if a product's lowest offer looks higher than expected, check the **Vendor Offers** tab to review and negotiate.
+</Info>

@@ -1,0 +1,87 @@
+---
+title: "Customer Portal: Branded Key Delivery for Every Order"
+sidebarTitle: "Customer Portal"
+description: "Understand how the tokenised customer portal delivers keys securely, what customers see, how reveal works, and how to resend or revoke portal links."
+---
+
+Every order in Tokensupply — whether placed manually or fulfilled automatically through a connected channel — generates a unique, tokenised delivery URL for your customer. This is the Customer Portal: a secure, branded page where customers claim their keys without needing an account or login. The URL follows the pattern `/s/{token_id}/order/{orderToken}`, meaning each link is one-time-scoped to a specific delivery token and cannot be shared across orders.
+
+<Note>
+  The portal inherits your store branding automatically — your logo and brand colours from **Settings → General** appear on every delivery page. Customers see a consistent experience that reflects your store, not Tokensupply's.
+</Note>
+
+## What customers see
+
+When a customer opens their portal link, they land on a clean delivery page that shows everything they need to claim their purchase.
+
+<CardGroup cols={2}>
+  <Card title="Store Branding" icon="palette">
+    Your logo and brand colours appear at the top of the page, so the experience feels native to your store.
+  </Card>
+  <Card title="Delivered Keys with Status Badges" icon="tag">
+    Each key in the order is listed with a status badge — for example, **Ready to Reveal** — so the customer knows what's available.
+  </Card>
+  <Card title="Reveal Action" icon="eye">
+    A prominent **Reveal** button unmasks each key on demand. Clicking it marks the key as revealed and transitions the order to Completed.
+  </Card>
+  <Card title="Download Buttons" icon="download">
+    If the order includes any attached files (for example, licence certificates or instruction PDFs), download buttons appear alongside the key list.
+  </Card>
+</CardGroup>
+
+## How the reveal works
+
+The reveal is the moment of delivery. When a customer clicks **Reveal**:
+
+<Steps>
+  <Step title="Key is unmasked">
+    The key transitions from a masked state (shown as dots) to its full plaintext value, visible only to that customer in that browser session.
+  </Step>
+  <Step title="Reveal is logged">
+    Tokensupply records the reveal event in the delivery timeline — including the timestamp — creating a permanent audit trail.
+  </Step>
+  <Step title="Order marked Complete">
+    The order status automatically moves from **Pending** to **Completed**. No action is needed on your end.
+  </Step>
+</Steps>
+
+<Info>
+  A customer can view a revealed key again by returning to the same portal link, as long as the link has not been revoked. Once revoked (for example, on refund), the page becomes inaccessible.
+</Info>
+
+## Refunds and link revocation
+
+When you process a refund on an order, Tokensupply takes the following actions automatically:
+
+<Steps>
+  <Step title="All portal links revoked">
+    Every active delivery URL associated with the order is invalidated immediately. The customer's link will return an error if they try to access it.
+  </Step>
+  <Step title="Unrevealed keys returned to inventory">
+    Any keys that the customer had not yet revealed are returned to your inventory, so your stock count stays accurate and the keys can be reallocated.
+  </Step>
+</Steps>
+
+<Warning>
+  If the customer has already revealed a key before you process the refund, that key cannot be recovered — it has been disclosed. Factor this into your refund policy and consider requesting confirmation from the customer that the key is unused before processing.
+</Warning>
+
+## Resending the delivery link
+
+If a customer loses their email, cannot find the portal link, or you want to invalidate a previously shared URL and issue a new one, use the **Re-send delivery** action.
+
+<Steps>
+  <Step title="Open the transaction detail page">
+    Navigate to **Transactions → All Transactions**, find the order, and click through to its detail page.
+  </Step>
+  <Step title="Click Re-send delivery">
+    Trigger the **Re-send delivery** action. Tokensupply generates a brand-new delivery token for the order.
+  </Step>
+  <Step title="New link emailed to customer">
+    The fresh portal URL is emailed to the customer. The old URL is automatically invalidated — anyone who still has the previous link will find it no longer works.
+  </Step>
+</Steps>
+
+<Tip>
+  Re-sending delivery is safe to use as a security measure. If you suspect a portal link was forwarded to an unintended recipient, trigger a re-send to cut off the old link and issue a clean one to your customer.
+</Tip>
