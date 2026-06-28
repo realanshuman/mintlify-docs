@@ -4,9 +4,9 @@
   "theme": "mint",
   "favicon": "https://media.brand.dev/d1e41bb1-a167-46ed-87e9-1145f196ba1a.png",
   "colors": {
-    "primary": "#fb5f27",
-    "light": "#fa6672",
-    "dark": "#fb5f27"
+    "primary": "#000000",
+    "light": "#ffffff",
+    "dark": "#45e986"
   },
   "navigation": {
     "tabs": [
